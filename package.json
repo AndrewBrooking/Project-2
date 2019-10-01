@@ -1,0 +1,22 @@
+{
+  "name": "MVC-Node-App-Template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "Andrew Brooking",
+  "license": "Public Domain",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mysql": "^2.17.1",
+    "orm": "^5.0.4"
+  },
+  "devDependencies": {
+    "handlebars-helper-css": "^0.1.0"
+  }
+}
