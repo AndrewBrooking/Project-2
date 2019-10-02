@@ -2,14 +2,14 @@
   "development": {
     "username": "root",
     "password": "Italia3357402203",
-    "database": "bam",
+    "database": "pmp_db",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "Italia3357402203",
-    "database": "bam",
+    "database": "pmp_db",
     "host": "localhost",
     "dialect": "mysql",
     "logging": false
