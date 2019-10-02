@@ -1,9 +1,17 @@
 module.exports = function (sequelize, DataTypes) {
     let User = sequelize.define('User', {
+        id: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
+            unique: true,
+        },
         uName: {
             type: DataTypes.STRING,
             notNull: true,
             notEmpty: true,
+            unique: true,
             validation: {
                 len: [4, 16],
                 equals: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){4,16}[a-zA-Z0-9]$/
@@ -22,18 +30,23 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             notNull: true,
             notEmpty: true,
+            unique: true,
             validation: {
                 len: [8, 100],
                 isEmail: true
             }
-        },
-        followingID: {
-            type: DataTypes.INTEGER,
-            notNull: true
         }
     });
 
-    // TODO: Association
+    User.associate = function (models) {
+        User.hasMany(models.Project, {
+            onDelete: "cascade"
+        });
+
+        User.hasMany(models.Following, {
+            onDelete: "cascade"
+        });
+    };
 
     return User;
 };
