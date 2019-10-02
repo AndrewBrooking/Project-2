@@ -1,22 +1,25 @@
 {
-  "name": "MVC-Node-App-Template",
+  "name": "Project-2",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "start": "node server.js",
-    "watch": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewBrooking/Project-2.git"
   },
   "keywords": [],
-  "author": "Andrew Brooking",
-  "license": "Public Domain",
-  "dependencies": {
-    "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
-    "mysql": "^2.17.1",
-    "orm": "^5.0.4"
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewBrooking/Project-2/issues"
   },
-  "devDependencies": {
-    "handlebars-helper-css": "^0.1.0"
-  }
+  "homepage": "https://github.com/AndrewBrooking/Project-2#readme"
 }
