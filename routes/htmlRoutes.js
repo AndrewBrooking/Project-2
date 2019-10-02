@@ -8,6 +8,10 @@ module.exports = function(app) {
     });
   });
 
+  app.get("/register", function (req, res) {
+    res.render("registration", { title: "Registration" });
+  });
+
   // Load example page and pass in an example by id
   app.get("/example/:id", function(req, res) {
     db.User.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
