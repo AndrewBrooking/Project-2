@@ -43,3 +43,5 @@ typings/
 .env
 # next.js build output
 .next
+# Sequelize config
+config.json
