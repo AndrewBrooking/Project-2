@@ -1,6 +1,6 @@
 require("dotenv").config();
+
 const express = require("express");
-const expressValidator = require('express-validator');
 const db = require("./models");
 
 const app = express();
@@ -12,15 +12,12 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 app.use(express.static("public"));
-
 app.set("view engine", "ejs");
 
-app.use(expressValidator([]));
-
 // Routes
+require("./routes/htmlRoutes.js")(app, db);
 require("./routes/apiRoutes.js")(app, db);
 require("./routes/userRoutes.js")(app, db);
-require("./routes/htmlRoutes.js")(app, db);
 
 const syncOptions = {
   force: false

@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, db) {
   // Get all examples
   app.get("/api/users", function (req, res) {
     db.User.findAll({}).then(function (dbExamples) {
