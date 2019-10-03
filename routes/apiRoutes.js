@@ -10,11 +10,13 @@ module.exports = function(app) {
 
   app.post("/createUser", (req, res) => {
     //set user (minimal data added right now for testing)
-    createUser(req.body.username, req.body.email);
+    //postman
+    
     //creates a user when sent a post request here
     function createUser(userName, email) {
       db.User.create({ uName: userName, pass: "test", email: email });
     }
+    createUser(req.body.username, req.body.email);
     db.User.findAll().then(users => {
       res.send(users)
     })
@@ -26,6 +28,7 @@ module.exports = function(app) {
       res.json(dbExample);
     });
   });
+
 
   // Delete an example by id
   app.delete("/api/users/:id", function(req, res) {
