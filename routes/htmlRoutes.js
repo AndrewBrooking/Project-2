@@ -1,6 +1,4 @@
-var db = require("../models");
-
-module.exports = function(app) {
+module.exports = function(app, db) {
   // Load index page
   app.get("/", function(req, res) {
     db.User.findAll({}).then(function(dbExamples) {
