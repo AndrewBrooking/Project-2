@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    let Following = sequelize.DataTypes('Following', {
+    let Following = sequelize.define('Following', {
         1: {
             type: DataTypes.INTEGER,
             isInt: true
