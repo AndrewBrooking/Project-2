@@ -1,15 +1,9 @@
-var db = require("../models");
-
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
     db.User.findAll({}).then(function(dbExamples) {
       res.render("index", { msg: JSON.stringify(dbExamples) });
     });
-  });
-
-  app.get("/register", function (req, res) {
-    res.render("registration", { title: "Registration" });
   });
 
   // Load example page and pass in an example by id

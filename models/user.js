@@ -1,3 +1,5 @@
+const usersUtil = require("../misc/usersUtil.js");
+
 module.exports = function (sequelize, DataTypes) {
     let User = sequelize.define('User', {
         uName: {
@@ -6,8 +8,8 @@ module.exports = function (sequelize, DataTypes) {
             notEmpty: true,
             unique: true,
             validation: {
-                len: [4, 16],
-                equals: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){4,16}[a-zA-Z0-9]$/
+                len: [usersUtil.nameMinLength, usersUtil.nameMaxLength],
+                equals: usersUtil.nameRegex
             }
         },
         pass: {
@@ -15,8 +17,8 @@ module.exports = function (sequelize, DataTypes) {
             notNull: true,
             notEmpty: true,
             validation: {
-                len: [8, 32],
-                equals: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){4,16}[a-zA-Z0-9]$/
+                len: [userUtils.passMinLength, userUtils.passMaxLength],
+                equals: userUtils.passRegex
             }
         },
         email: {
@@ -25,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
             notEmpty: true,
             unique: true,
             validation: {
-                len: [8, 100],
+                len: [userUtils.emailMinLength, userUtils.emailMaxLength],
                 isEmail: true
             }
         }
