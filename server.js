@@ -6,6 +6,8 @@ const db = require("./models");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const expressLayouts = require('express-ejs-layouts');
+
 // Middleware
 app.use(express.urlencoded({
   extended: false
@@ -13,11 +15,17 @@ app.use(express.urlencoded({
 app.use(express.json());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(expressLayouts);
 
 // Routes
-require("./routes/htmlRoutes.js")(app, db);
+
 require("./routes/apiRoutes.js")(app, db);
-require("./routes/userRoutes.js")(app, db);
+// require("./routes/userRoutes.js")(app, db);
+require("./routes/htmlRoutes.js")(app, db);
+
+
+
+
 
 const syncOptions = {
   force: false

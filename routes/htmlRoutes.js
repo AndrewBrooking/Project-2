@@ -15,9 +15,22 @@ module.exports = function(app, db) {
 
     });
   });
+  
+  app.get('/project/:id', function(req, res) {
 
+    db.Project.findOne({ where: {id: req.params.id} }).then(function(result){
+
+      res.render("project", {msg: result.dataValues})
+    })
+    
+  })
+  
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.send("404");
   });
+  
+
+
+  
 };
