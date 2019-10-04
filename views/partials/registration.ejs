@@ -1,0 +1,52 @@
+<!-- Button trigger for sign up modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signUp">Sign Up</button>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="signUpLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="signUpLabel">Registration</h5>
+            </div>
+
+            <!-- Modal Body/Form -->
+            <div class="modal-body">
+                <form>
+                    <!-- Email Input -->
+                    <div class="form-group">
+                        <label for="email_input">Email Address</label>
+                        <input type="email" class="form-control" id="emailInput">
+                    </div>
+
+                    <!-- Username Input -->
+                    <div class="form-group">
+                        <label for="username_input">Username</label>
+                        <input type="text" class="form-control" id="usernameInput">
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <label for="password_input">Password</label>
+                        <input type="password" class="form-control" id="passwordInput">
+                    </div>
+
+                    <!-- Password Verification -->
+                    <div class="form-group">
+                        <label for="password_verify">Re-Enter Password</label>
+                        <input type="password" class="form-control" id="passwordVerify">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                <!-- Submit Button -->
+                <button class="btn btn-primary" type="registerUser">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
