@@ -3,7 +3,9 @@ const {
     validationResult
 } = require("express-validator");
 
+// Import bcrypt for password hashing
 const bcrypt = require("bcrypt");
+
 const usersUtil = require("../misc/usersUtil.js");
 
 const saltRounds = 10;
@@ -11,34 +13,35 @@ const saltRounds = 10;
 module.exports = function (app, db) {
 
     app.get("/register", function (req, res) {
-        res.render("registration", {
-            title: "Registration"
-        });
+        res.render("registration", {});
     });
 
     app.post("/register", [
         // Validate username
-        check(`username_input`).trim().escape().isLength({
+        check(`username`).trim().escape().isLength({
             min: usersUtil.nameMinLength,
             max: usersUtil.nameMaxLength
         }),
 
         // Validate email
-        check(`email_input`).trim().escape().normalizeEmail().isEmail().isLength({
+        check(`email`).trim().escape().normalizeEmail().isEmail().isLength({
             min: usersUtil.emailMinLength,
             max: usersUtil.emailMaxLength
         }),
 
         // Validate pasword
-        check(`password_input`).trim().escape().isLength({
+        check(`password`).trim().escape().isLength({
             min: usersUtil.passMinLength,
             max: usersUtil.passMaxLength
         }),
 
         // Validate pasword verification
-        check(`password_verify`).trim().escape().custom((value, {
+        check(`passwordVerify`).trim().escape().isLength({
+            min: usersUtil.passMinLength,
+            max: usersUtil.passMaxLength
+        }).custom((value, {
             req
-        }) => (value === req.body.password_input))
+        }) => (value === req.body.password))
 
     ], function (req, res) {
 
@@ -46,7 +49,7 @@ module.exports = function (app, db) {
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            console.log(errors);
+            // Return failure to POST status to client
             return res.status(422).json({
                 errors: errors.array()
             });
@@ -67,9 +70,11 @@ module.exports = function (app, db) {
                 pass: hash,
                 email: email
             }).then(function (result) {
-                // Temporarily return the json data for testing
+                // Log db record to server console
                 console.log(result);
-                res.json(result);
+
+                // Return success status to client
+                res.status(200).end();
             });
         });
     });

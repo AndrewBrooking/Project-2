@@ -10,6 +10,8 @@ $(document).ready(() => {
             password: $("#passwordInput").val().toString().trim()
         };
 
+        console.log(newUser);
+
         $.post("/register", newUser).then((result) => {
             location.reload();
         });
