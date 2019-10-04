@@ -18,9 +18,9 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 // Routes
-require("./routes/htmlRoutes.js")(app, db);
 require("./routes/apiRoutes.js")(app, db);
 require("./routes/userRoutes.js")(app, db);
+require("./routes/htmlRoutes.js")(app, db);
 
 const syncOptions = {
   force: false
