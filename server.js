@@ -1,23 +1,30 @@
 require("dotenv").config();
-var express = require("express");
 
-var db = require("./models");
+const express = require("express");
+const db = require("./models");
 
-var app = express();
-var PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 app.set("view engine", "ejs");
 
 // Routes
-require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+require("./routes/htmlRoutes.js")(app, db);
+require("./routes/apiRoutes.js")(app, db);
+require("./routes/userRoutes.js")(app, db);
 
-var syncOptions = { force: false };
+const syncOptions = {
+  force: false
+};
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
