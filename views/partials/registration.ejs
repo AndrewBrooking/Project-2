@@ -1,0 +1,46 @@
+<div class="modal" id="registrationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Registration</h5>
+            </div>
+
+            <div class="modal-body">
+                <div id="msgDiv"></div>
+
+                <form>
+
+                    <!-- Email input -->
+                    <div class="form-group">
+                        <label for="email_input">Email Address</label>
+                        <input type="email" class="form-control" id="emailInput" required>
+                    </div>
+
+                    <!-- Username input -->
+                    <div class="form-group">
+                        <label for="username_input">Username</label>
+                        <input type="text" class="form-control" id="usernameInput" required>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-group">
+                        <label for="password_input">Password</label>
+                        <input type="password" class="form-control" id="passwordInput" required>
+                    </div>
+
+                    <!-- Password verification -->
+                    <div class="form-group">
+                        <label for="password_verify">Re-Enter Password</label>
+                        <input type="password" class="form-control" id="passwordVerify" required>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary" type="submit" id="registerUser">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
