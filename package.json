@@ -15,8 +15,6 @@
     "dotenv": "^8.0.0",
     "ejs": "^2.7.1",
     "express": "^4.17.0",
-    "express-ejs-layouts": "^2.5.0",
-    "express-validator": "^6.2.0",
     "mysql2": "^1.6.5",
     "sequelize": "^5.8.6"
   },

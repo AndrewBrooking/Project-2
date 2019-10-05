@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module.exports = {
   nameMinLength: 4,
   nameMaxLength: 16,
@@ -8,3 +9,13 @@ module.exports = {
   emailMinLength: 8,
   emailMaxLength: 100
 };
+=======
+module.exports = {
+  nameMinLength: 4,
+  nameMaxLength: 16,
+  passMinLength: 8,
+  passMaxLength: 32,
+  emailMinLength: 8,
+  emailMaxLength: 100
+};
+>>>>>>> e3f9e9604981623f90f4cfac7126a63caff771fc

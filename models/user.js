@@ -8,8 +8,7 @@ module.exports = function (sequelize, DataTypes) {
             notEmpty: true,
             unique: true,
             validation: {
-                len: [usersUtil.nameMinLength, usersUtil.nameMaxLength],
-                //equals: usersUtil.nameRegex
+                len: [usersUtil.nameMinLength, usersUtil.nameMaxLength]
             }
         },
         pass: {
@@ -17,8 +16,7 @@ module.exports = function (sequelize, DataTypes) {
             notNull: true,
             notEmpty: true,
             validation: {
-                len: [usersUtil.passMinLength, usersUtil.passMaxLength],
-                //equals: usersUtil.passRegex
+                len: [usersUtil.passMinLength, usersUtil.passMaxLength]
             }
         },
         email: {
