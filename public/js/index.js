@@ -1,22 +1,43 @@
 $(document).ready(() => {
 
-    console.log("Loaded");
-
-    $("#register_user").on("click", (event) => {
+    $(document).on("click", "#loginUser", (event) => {
         event.preventDefault();
 
+        console.log("Login clicked");
+
+        // TODO: Login user
+
+        // Empty form values
+        $("#usernameLogin").val("");
+        $("#passwordLogin").val("");
+    });
+
+    // Handle user registration submission
+    $(document).on("click", "#registerUser", (event) => {
+        event.preventDefault();
+
+        $("#msgDiv").empty();
+
+        // Obtain user input values
         let newUser = {
-            username: $("#username_input").val().toString().trim(),
-            email: $("#email_input").val().toString().trim(),
-            password: $("#password_input").val().toString().trim(),
-            passwordVerify: $("#password_verify").val().toString().trim()
+            username: $("#usernameInput").val().toString().trim(),
+            email: $("#emailInput").val().toString().trim(),
+            password: $("#passwordInput").val().toString().trim(),
+            passwordVerify: $("#passwordVerify").val().toString().trim()
         };
 
-        console.log(newUser);
-
+        // POST request to server
         $.post("/register", newUser).then((result) => {
-            //console.log(result);
-            location.assign("/");
+
+            console.log(result);
+
+            $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+
+            // Empty form values
+            $("#usernameInput").val("");
+            $("#emailInput").val("");
+            $("#passwordInput").val("");
+            $("#passwordVerify").val("");
         });
     });
 });
