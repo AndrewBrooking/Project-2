@@ -2,7 +2,7 @@ module.exports = function(app, db) {
   // Load index page
   app.get("/", function(req, res) {
     db.User.findAll({}).then(function(dbExamples) {
-      res.render("index", { msg: dbExamples });
+      res.render("index", { projects: dbExamples });
     });
   });
 
@@ -20,7 +20,9 @@ module.exports = function(app, db) {
 
   app.get("/project/:id", function(req, res) {
     db.Project.findOne({ where: { id: req.params.id } }).then(function(result) {
-      res.render("project", { msg: result.dataValues });
+      db.User.findOne({ where: { id: result.UserId } }).then(function(result2) {
+        res.render("project", { proName: result.name, creator: result2.uName, dateMade: result.createdAt, pic:result.img });
+      });
     });
   });
   // Render 404 page for any unmatched routes
