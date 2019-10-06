@@ -1,4 +1,7 @@
-let project = $('.pro');
-project.on('click', function() {
-    console.log(this)
-})
+$(document).ready(() => {
+  let project = $(".pro");
+  project.on("click", function() {
+    console.log(this);
+  });
+  
+});
