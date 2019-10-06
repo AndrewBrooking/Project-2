@@ -21,6 +21,8 @@
   <div class="container">
     <div class="row">
       <div class="col-8 offset-2">
+       
+         <% include ./partials/registration %>
         
         <div class="projects">
           <% for(let i = 0; i < projects.length; i ++ ){%>
@@ -80,8 +82,8 @@
   <script src="/js/userPage.js"></script>
 </div>
 
-  <% include ../partials/registration %>
+ 
 
-  <% include ../partials/scripts %>
+  <% include ./partials/scripts %>
 </body>
 
