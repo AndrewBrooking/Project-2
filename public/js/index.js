@@ -3,9 +3,14 @@ $(document).ready(() => {
     $(document).on("click", "#loginUser", (event) => {
         event.preventDefault();
 
-        console.log("Login clicked");
+        let user = {
+            username: $("#usernameLogin").val().toString().trim(),
+            password: $("#passwordLogin").val().toString().trim()
+        };
 
-        // TODO: Login user
+        $.post("/login", user).then((result) => {
+            // TODO
+        });
 
         // Empty form values
         $("#usernameLogin").val("");

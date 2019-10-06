@@ -1,22 +1,37 @@
 // Import bcrypt for password hashing
 const bcrypt = require("bcrypt");
-
 const usersUtil = require("../misc/usersUtil.js");
-
 const saltRounds = 10;
 
 module.exports = function (app, db) {
 
-    app.get("/register", function (req, res) {
-        res.render("registration", {});
+    app.post("/login", function (req, res) {
+        let username = req.username;
+        let password = reg.password;
+
+        bcrypt.hash(password, saltRounds, function (err, hash) {
+            if (err) throw err;
+
+            db.findOne({
+                where: {
+                    username: username,
+                    password: hash
+                }
+            }).then(function (user) {
+                res.json(user);
+            });
+        });
     });
 
     app.post("/register", function (req, res) {
         // Obtain user input values
-        const username = req.body.username;
-        const email = req.body.email;
-        const password = req.body.password;
-        const passwordVerify = req.body.passwordVerify
+        const newUser = {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email
+        };
+
+        const passwordVerify = req.body.passwordVerify;
 
         let vFailed = false;
 
@@ -66,35 +81,62 @@ module.exports = function (app, db) {
         }
 
         // Validate password and password verification match
-        if (password !== passwordVerify) {
+        if (newUser.password !== passwordVerify) {
             vFailed = true;
-            res.json({
+            return res.json({
                 msg: `Passwords do not match`,
                 color: "danger"
             });
         }
 
-        if (!vFailed) {
-            // Hash user password
-            bcrypt.hash(password, saltRounds, function (err, hash) {
-                if (err) throw err;
-
-                // Insert new user into the database
-                db.User.create({
-                    uName: username,
-                    pass: hash,
-                    email: email
-                }).then(function (result) {
-                    // Log db record to server console
-                    console.log(result);
-
-                    // Return success status to client
-                    res.status(200).json({
-                        msg: "Success!",
-                        color: "success"
-                    });
+        // Validate username is not already in database
+        db.User.count({
+            where: {
+                username: newUser.username
+            }
+        }).then(function (uCount) {
+            if (uCount != 0) {
+                vFailed = true;
+                return res.json({
+                    msg: `Username already in use`,
+                    color: "danger"
                 });
+            }
+
+            // Validate email is not already in database
+            db.User.count({
+                where: {
+                    email: newUser.email
+                }
+            }).then(function (eCount) {
+                if (eCount != 0) {
+                    vFailed = true;
+                    return res.json({
+                        msg: `Email already in use`,
+                        color: "danger"
+                    });
+                }
+
+                // Create new user if no validations failed
+                if (!vFailed) {
+                    // Hash user password
+                    bcrypt.hash(password, saltRounds, function (err, hash) {
+                        if (err) throw err;
+
+                        // Insert new user into the database
+                        db.User.create(newUser).then(function (result) {
+                            // Log db record to server console
+                            console.log(result);
+
+                            // Return success status to client
+                            res.status(200).json({
+                                msg: "Success!",
+                                color: "success"
+                            });
+                        });
+                    });
+                }
             });
-        }
+        });
     });
 };
