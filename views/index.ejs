@@ -1,89 +1,29 @@
-<link rel="stylesheet" href="./css/styles.css">
 <section id="banner">
-  <div class="content">
-    <header>
-      <h1>Hi, Welcome to PayMyProject<br /></h1>
-      <p>A free and fully responsive site to support your favorite creates</p>
-    </header>
-    <p>
-      Please create a user account to follow and/or donate to your favorite
-      projects. Or just browse current projects as a guest!
-    </p>
-    <!-- <ul class="actions">
-        <li><a href="#" class="button big">Learn More</a></li>
-      </ul> -->
-  </div>
-  <!-- <span class="image object">
-      <img src="images/pic10.jpg" alt="" />
-    </span> -->
-</section>
-<div id="home">
-  <div class="container">
-    <div class="row">
-      <div class="col-8 offset-2">
-       
-         <% include ./partials/registration %>
-        
-        <div class="projects">
-          <% for(let i = 0; i < projects.length; i ++ ){%>
-          <div class="pro pro<%=i%>">
-            <h4>Project1</h4>
-            <img src="https://picsum.photos/180/100" alt="" />
-            <h5>Short description of the project</h5>
-          </div>
-            <%}%>
-        </div>
-          </div>
-          <h2>This is our Home Page!</h2>
-          <form class="clearfix mb-4" action="POST">
-            <div class="form-group">
-              <label for="example-text">Example Text</label>
-              <input
-                type="text"
-                id="example-text"
-                class="form-control"
-                aria-describedby="example-text"
-                placeholder="Enter Example Text"
-              />
-            </div>
-            <div class="form-group">
-              <label for="example-description">Example Description</label>
-              <textarea
-                class="form-control"
-                id="example-description"
-                aria-describedby="example-description"
-                placeholder="Enter Example Description"
-              ></textarea>
-            </div>
-            <button id="submit" class="btn btn-primary float-right">
-              Submit
-            </button>
-          </form>
-          <h3>Examples:</h3>
-          <ul id="example-list" class="list-group">
-            {{#each examples}}
-            <li data-id="{{ this.id }}" class="list-group-item">
-              <a href="example/{{ this.id }}">{{ this.text }}</a>
-              <button class="btn btn-danger float-right delete">ｘ</button>
-            </li>
-            {{/each}}
-          </ul>
-        </div>
-      </div>
+    <div class="content">
+      <header>
+        <h1>Hi, Welcome to PayMyProject<br />
+        </h1>
+        <p>A fully responsive site to support your favorite content/project creators</p>
+      </header>
+      <p>Please create a user account to follow and/or donate to your favorite projects. Or just browse current projects as a guest! </p>
     </div>
-  </div>
 
+  </section>
+  <section>
+    <header class="major">
+      <h2>Current Open Projects</h2>
+    </header>
+    <div class="posts">
 
-  <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
-  ></script>
-  <script src="/js/index.js"></script>
-  <script src="/js/userPage.js"></script>
-</div>
-
- 
-
-  <% include ./partials/scripts %>
-</body>
-
+          <% msg.forEach(function(item) { %>
+            <article>
+                <a class="image test"><img src=<%= item.img %> alt="" /></a>
+                <h3><%= item.name %></h3>
+                <p><%= item.desc %></p>
+                <ul class="actions">
+                  <li><a href="/project/<%= item.id %>" class="button">More</a></li>
+                </ul>
+              </article>
+         <% }); %>
+    </div>
+  </section>
