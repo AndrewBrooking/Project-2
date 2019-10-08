@@ -1,43 +1,46 @@
-// $(document).ready(() => {
+console.log('hitting')
 
-//     $(document).on("click", "#loginUser", (event) => {
-//         event.preventDefault();
+$(document).ready(() => {
 
-//         console.log("Login clicked");
+    $(document).on("click", "#loginUser", (event) => {
+        event.preventDefault();
 
-//         // TODO: Login user
+        console.log("Login clicked");
 
-//         // Empty form values
-//         $("#usernameLogin").val("");
-//         $("#passwordLogin").val("");
-//     });
+        // TODO: Login user
 
-//     // Handle user registration submission
-//     $(document).on("click", "#registerUser", (event) => {
-//         event.preventDefault();
+        // Empty form values
+        $("#usernameLogin").val("");
+        $("#passwordLogin").val("");
+    });
 
-//         $("#msgDiv").empty();
+    // Handle user registration submission
+    $(document).on("click", "#registerUser", (event) => {
+        event.preventDefault();
 
-//         // Obtain user input values
-//         let newUser = {
-//             username: $("#usernameInput").val().toString().trim(),
-//             email: $("#emailInput").val().toString().trim(),
-//             password: $("#passwordInput").val().toString().trim(),
-//             passwordVerify: $("#passwordVerify").val().toString().trim()
-//         };
+        $("#msgDiv").empty();
 
-//         // POST request to server
-//         $.post("/register", newUser).then((result) => {
+        // Obtain user input values
+        let newUser = {
+            username: $("#usernameInput").val().toString().trim(),
+            email: $("#emailInput").val().toString().trim(),
+            password: $("#passwordInput").val().toString().trim(),
+            passwordVerify: $("#passwordVerify").val().toString().trim()
+        };
+        console.log(newUser)
 
-//             console.log(result);
+        // POST request to server
+        // $.post("/register", newUser).then((result) => {
 
-//             $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+        //     console.log(result);
 
-//             // Empty form values
-//             $("#usernameInput").val("");
-//             $("#emailInput").val("");
-//             $("#passwordInput").val("");
-//             $("#passwordVerify").val("");
-//         });
-//     });
-// });
+        //     $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+
+        //     // Empty form values
+        //     $("#usernameInput").val("");
+        //     $("#emailInput").val("");
+        //     $("#passwordInput").val("");
+        //     $("#passwordVerify").val("");
+        // });
+    });
+});

@@ -8,7 +8,7 @@ const saltRounds = 10;
 module.exports = function (app, db) {
 
     app.get("/register", function (req, res) {
-        res.render("registration");
+        res.render("registration", {});
     });
 
     app.post("/register", function (req, res) {
