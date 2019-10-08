@@ -1,17 +1,18 @@
 module.exports = function (app, db) {
+  const Op = db.Sequelize.Op
 
   // Load index page
   app.get("/", function (req, res) {
-    let active = false;
+    let authenticated = false;
 
     if (req.session.key) {
-      active = true;
+      authenticated = true;
     }
 
-    db.User.findAll({}).then(function (dbExamples) {
+    db.Project.findAll({}).then(function (result) {
       res.render("index", {
-        projects: dbExamples,
-        active: active
+        msg: result,
+        authenticated: authenticated
       });
     });
   });
@@ -32,28 +33,61 @@ module.exports = function (app, db) {
     });
   });
 
-  app.get("/project/:id", function (req, res) {
-    db.Project.findOne({
-      where: {
-        id: req.params.id
-      }
-    }).then(function (result) {
-      db.User.findOne({
-        where: {
-          id: result.UserId
-        }
-      }).then(function (result2) {
-        res.render("project", {
-          proName: result.name,
-          creator: result2.uName,
-          dateMade: result.createdAt,
-          pic: result.img
-        });
-      });
-    });
+  app.get('/create', function(req, res) {
+    res.render('createProject')
+  })
+
+  app.get('/welcome', function (req, res) {
+    res.render('welcome')
+  })
+  app.get('/login', function (req, res) {
+    res.render('login')
+  })
+
+  app.get('/project/:id', function(req, res) {
+
+    // db.Project.findOne({ where: {id: req.params.id} }).then(function(result){
+
+    //   res.render("project", {msg: result.dataValues})
+    // })
+    db.Project.findOne({ where: {id: req.params.id}, include: db.User }).then(function(result){
+
+      res.render("project", {msg: result.dataValues})
+    })
+
+
+    
   });
+
+
+  app.get("/search", function(req, res) {
+    db.Project.findAll({
+      
+      where: {
+        [Op.or]: [
+          {
+            desc: {
+              [Op.like]: `%${req.query.query}%`
+            }
+          },
+          {
+            name: {
+              [Op.like]: `%${req.query.query}%`
+            }
+          }
+        ]
+
+      }
+    }).then((result)=>{
+
+      res.render("index", { msg: result });
+    })
+  });
+
+
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.send("404");
   });
 };
+  
