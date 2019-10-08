@@ -6,18 +6,26 @@ const saltRounds = 10;
 module.exports = function (app, db) {
 
     app.post("/login", function (req, res) {
+        // Obtain user inputs
         let username = req.username;
-        let password = reg.password;
+        let password = req.password;
 
+        // Hash password for comparison
         bcrypt.hash(password, saltRounds, function (err, hash) {
             if (err) throw err;
 
+            // Find a matching entry
             db.findOne({
                 where: {
-                    username: username,
-                    password: hash
+                    username: username
                 }
             }).then(function (user) {
+                if (user.password === hash) {
+                    console.log("Successful login!")
+                } else {
+                    console.log("Could not login user with username: " + username);
+                }
+                
                 res.json(user);
             });
         });
