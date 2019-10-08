@@ -1,14 +1,28 @@
-module.exports = function(app, db) {
+module.exports = function (app, db) {
+
   // Load index page
-  app.get("/", function(req, res) {
-    db.User.findAll({}).then(function(dbExamples) {
-      res.render("index", { projects: dbExamples });
+  app.get("/", function (req, res) {
+    let active = false;
+
+    if (req.session.key) {
+      active = true;
+    }
+
+    db.User.findAll({}).then(function (dbExamples) {
+      res.render("index", {
+        projects: dbExamples,
+        active: active
+      });
     });
   });
 
   // Load example page and pass in an example by id
-  app.get("/users/:id", function(req, res) {
-    db.User.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
+  app.get("/users/:id", function (req, res) {
+    db.User.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then(function (dbExample) {
       console.log(dbExample);
       res.render("userPage", {
         id: req.params.id,
@@ -18,15 +32,28 @@ module.exports = function(app, db) {
     });
   });
 
-  app.get("/project/:id", function(req, res) {
-    db.Project.findOne({ where: { id: req.params.id } }).then(function(result) {
-      db.User.findOne({ where: { id: result.UserId } }).then(function(result2) {
-        res.render("project", { proName: result.name, creator: result2.uName, dateMade: result.createdAt, pic:result.img });
+  app.get("/project/:id", function (req, res) {
+    db.Project.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then(function (result) {
+      db.User.findOne({
+        where: {
+          id: result.UserId
+        }
+      }).then(function (result2) {
+        res.render("project", {
+          proName: result.name,
+          creator: result2.uName,
+          dateMade: result.createdAt,
+          pic: result.img
+        });
       });
     });
   });
   // Render 404 page for any unmatched routes
-  app.get("*", function(req, res) {
+  app.get("*", function (req, res) {
     res.send("404");
   });
 };

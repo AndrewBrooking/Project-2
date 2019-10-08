@@ -1,5 +1,6 @@
 $(document).ready(() => {
 
+    // Handle login submission
     $(document).on("click", "#loginUser", (event) => {
         event.preventDefault();
 
@@ -8,8 +9,14 @@ $(document).ready(() => {
             password: $("#passwordLogin").val().toString().trim()
         };
 
+        $("#loginMsgDiv").empty();
+
         $.post("/login", user).then((result) => {
-            // TODO
+            if (result === "sign-in-fail") {
+                $("#loginMsgDiv").append(
+                    `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
+                );
+            }
         });
 
         // Empty form values
@@ -25,8 +32,8 @@ $(document).ready(() => {
 
         // Obtain user input values
         let newUser = {
-            username: $("#usernameInput").val().toString().trim(),
-            email: $("#emailInput").val().toString().trim(),
+            username: $("#usernameInput").val().toString().trim().toLowerCase(),
+            email: $("#emailInput").val().toString().trim().toLowerCase(),
             password: $("#passwordInput").val().toString().trim(),
             passwordVerify: $("#passwordVerify").val().toString().trim()
         };

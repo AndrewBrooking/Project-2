@@ -5,10 +5,18 @@ const saltRounds = 10;
 
 module.exports = function (app, db) {
 
+    app.get("/logout", function (req, res) {
+        req.session.destroy(function (err) {
+            if (err) throw err;
+            res.redirect("/");
+        });
+    });
+
     app.post("/login", function (req, res) {
         // Obtain user inputs
-        let username = req.username;
-        let password = req.password;
+        let username = req.username.toString().trim().toLowerCase();
+        let password = req.password.toString().trim();
+        let session = req.session;
 
         // Hash password for comparison
         bcrypt.hash(password, saltRounds, function (err, hash) {
@@ -21,12 +29,20 @@ module.exports = function (app, db) {
                 }
             }).then(function (user) {
                 if (user.password === hash) {
-                    console.log("Successful login!")
+                    console.log("Successful login!");
+
+                    // Set session variables
+                    session.key = {
+                        username: username,
+                        email: user.email
+                    };
+
+                    // Reload homepage with user logged in
+                    res.redirect("/");
                 } else {
                     console.log("Could not login user with username: " + username);
+                    res.end("sign-in-fail");
                 }
-                
-                res.json(user);
             });
         });
     });
@@ -34,9 +50,9 @@ module.exports = function (app, db) {
     app.post("/register", function (req, res) {
         // Obtain user input values
         const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email
+            username: req.body.username.toString().trim().toLowerCase(),
+            password: req.body.password.toString().trim(),
+            email: req.body.email.toString().trim().toLowerCase()
         };
 
         const passwordVerify = req.body.passwordVerify;
