@@ -43,7 +43,6 @@ $(document).ready(() => {
 
         // POST request to server
         $.post("/register", newUser).then((result) => {
-
             console.log(result);
 
             // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);

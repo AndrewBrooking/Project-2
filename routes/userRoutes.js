@@ -137,7 +137,7 @@ module.exports = function (app, db) {
                         msg: `Email already in use`
                     });
                 }
-
+                console.log(vFailed, 'AAAAAAA')
                 // Create new user if no validations failed
                 if (!vFailed) {
                     // Hash user password
@@ -149,7 +149,6 @@ module.exports = function (app, db) {
                         // Insert new user into the database
                         db.User.create(newUser).then(function (result) {
                             // Log db record to server console
-                            console.log(result);
 
                             req.session.userID = result.id;
 
