@@ -33,39 +33,43 @@ module.exports = function (app, db) {
     });
   });
 
-  app.get('/create', function(req, res) {
+  app.get('/create', function (req, res) {
     res.render('createProject')
-  })
+  });
 
   app.get('/welcome', function (req, res) {
     res.render('welcome')
-  })
+  });
+
   app.get('/login', function (req, res) {
     res.render('login')
-  })
+  });
 
-  app.get('/project/:id', function(req, res) {
+  app.get('/project/:id', function (req, res) {
 
     // db.Project.findOne({ where: {id: req.params.id} }).then(function(result){
 
     //   res.render("project", {msg: result.dataValues})
     // })
-    db.Project.findOne({ where: {id: req.params.id}, include: db.User }).then(function(result){
+    db.Project.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: db.User
+    }).then(function (result) {
 
-      res.render("project", {msg: result.dataValues})
-    })
-
-
-    
+      res.render("project", {
+        msg: result.dataValues
+      })
+    });
   });
 
 
-  app.get("/search", function(req, res) {
+  app.get("/search", function (req, res) {
     db.Project.findAll({
-      
+
       where: {
-        [Op.or]: [
-          {
+        [Op.or]: [{
             desc: {
               [Op.like]: `%${req.query.query}%`
             }
@@ -78,9 +82,11 @@ module.exports = function (app, db) {
         ]
 
       }
-    }).then((result)=>{
+    }).then((result) => {
 
-      res.render("index", { msg: result });
+      res.render("index", {
+        msg: result
+      });
     })
   });
 
@@ -90,4 +96,3 @@ module.exports = function (app, db) {
     res.send("404");
   });
 };
-  

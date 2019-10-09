@@ -5,30 +5,33 @@ $(document).ready(() => {
         event.preventDefault();
 
         let user = {
-            username: $("#usernameLogin").val().toString().trim(),
-            password: $("#passwordLogin").val().toString().trim()
+            username: ("" + $("#usernameLogin").val()).trim(),
+            password: ("" + $("#passwordLogin").val()).trim()
         };
 
-        $("#loginMsgDiv").empty();
+        console.log(user);
+
+        // $("#loginMsgDiv").empty();
 
         $.post("/login", user).then((result) => {
             if (result === "sign-in-fail") {
-                $("#loginMsgDiv").append(
-                    `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
-                );
+                // $("#loginMsgDiv").append(
+                //     `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
+                // );
+                console.log(result);
             }
-        });
 
-        // Empty form values
-        $("#usernameLogin").val("");
-        $("#passwordLogin").val("");
+            // Empty form values
+            $("#usernameLogin").val("");
+            $("#passwordLogin").val("");
+        });
     });
 
     // Handle user registration submission
     $(document).on("click", "#registerUser", (event) => {
         event.preventDefault();
 
-        $("#msgDiv").empty();
+        // $("#msgDiv").empty();
 
         // Obtain user input values
         let newUser = {
@@ -43,7 +46,7 @@ $(document).ready(() => {
 
             console.log(result);
 
-            $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+            // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
 
             // Empty form values
             $("#usernameInput").val("");

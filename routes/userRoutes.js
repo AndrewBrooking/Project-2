@@ -5,44 +5,49 @@ const saltRounds = 10;
 
 module.exports = function (app, db) {
 
-    app.get("/logout", function (req, res) {
+    app.get("/register", function (req, res) {
+        return res.render("registration", {});
+    });
+
+    app.post("/logout", function (req, res) {
         req.session.destroy(function (err) {
             if (err) throw err;
-            res.redirect("/");
+            return res.redirect("/");
         });
     });
 
     app.post("/login", function (req, res) {
         // Obtain user inputs
-        let username = req.username.toString().trim().toLowerCase();
-        let password = req.password.toString().trim();
-        let session = req.session;
+        let username = ("" + req.body.username).trim().toLowerCase();
+        let password = ("" + req.body.password).trim();
 
-        // Hash password for comparison
-        bcrypt.hash(password, saltRounds, function (err, hash) {
-            if (err) throw err;
+        // Find a matching entry
+        db.User.findOne({
+            where: {
+                uName: username
+            }
+        }).then(function (user) {
+            if (user == undefined || user == null) {
+                console.log("Could not login user: " + username);
+                return res.status(400);
+            }
 
-            // Find a matching entry
-            db.findOne({
-                where: {
-                    username: username
-                }
-            }).then(function (user) {
-                if (user.password === hash) {
+            // Compare passwords
+            bcrypt.compare(password, user.pass, function (err, result) {
+                if (err) throw err;
+
+                if (result) {
                     console.log("Successful login!");
 
                     // Set session variables
-                    session.key = {
-                        username: username,
-                        email: user.email
-                    };
+                    req.session.userID = user.id;
 
                     // Reload homepage with user logged in
-                    res.redirect("/");
-                } else {
-                    console.log("Could not login user with username: " + username);
-                    res.end("sign-in-fail");
+                    return res.redirect("/");
                 }
+
+                console.log("Could not login user: " + username);
+                return res.status(400);
             });
         });
     });
@@ -50,9 +55,9 @@ module.exports = function (app, db) {
     app.post("/register", function (req, res) {
         // Obtain user input values
         const newUser = {
-            username: req.body.username.toString().trim().toLowerCase(),
-            password: req.body.password.toString().trim(),
-            email: req.body.email.toString().trim().toLowerCase()
+            uName: ("" + req.body.username).trim().toLowerCase(),
+            pass: ("" + req.body.password).trim(),
+            email: ("" + req.body.email).trim().toLowerCase()
         };
 
         const passwordVerify = req.body.passwordVerify;
@@ -60,70 +65,63 @@ module.exports = function (app, db) {
         let vFailed = false;
 
         // Validate username length
-        if (username.length < usersUtil.nameMinLength || username.length > usersUtil.nameMaxLength) {
+        if (newUser.uName.length < usersUtil.nameMinLength || newUser.uName.length > usersUtil.nameMaxLength) {
             vFailed = true;
-            res.json({
-                msg: `Username must be between ${usersUtil.nameMinLength} and ${usersUtil.nameMaxLength} characters`,
-                color: "danger"
+            return res.json({
+                msg: `Username must be between ${usersUtil.nameMinLength} and ${usersUtil.nameMaxLength} characters`
             });
         }
 
         // Validate username does not have special characters
-        if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(username)) {
+        if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(newUser.uName)) {
             vFailed = true;
-            res.json({
-                msg: `Username cannot contain any special characters`,
-                color: "danger"
+            return res.json({
+                msg: `Username cannot contain any special characters`
             });
         }
 
         // Validate email length
-        if (email.length < usersUtil.emailMinLength || email.length > usersUtil.emailMaxLength) {
+        if (newUser.email.length < usersUtil.emailMinLength || newUser.email.length > usersUtil.emailMaxLength) {
             vFailed = true;
-            res.json({
-                msg: `Email address must be between ${usersUtil.emailMinLength} and ${usersUtil.emailMaxLength} characters`,
-                color: "danger"
+            return res.json({
+                msg: `Email address must be between ${usersUtil.emailMinLength} and ${usersUtil.emailMaxLength} characters`
             });
         }
 
         // Validate email format
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newUser.email)) {
             vFailed = true;
-            res.json({
-                msg: `Email address provided is not valid`,
-                color: "danger"
+            return res.json({
+                msg: `Email address provided is not valid`
             });
         }
 
         // Validate password length
-        if (password.length < usersUtil.passMinLength || password.length > usersUtil.passMaxLength) {
+        if (newUser.pass.length < usersUtil.passMinLength || newUser.pass.length > usersUtil.passMaxLength) {
             vFailed = true;
-            res.json({
-                msg: `Password must be between ${usersUtil.passMinLength} and ${usersUtil.passMaxLength} characters`,
-                color: "danger"
+            return res.json({
+                msg: `Password must be between ${usersUtil.passMinLength} and ${usersUtil.passMaxLength} characters`
             });
         }
 
         // Validate password and password verification match
-        if (newUser.password !== passwordVerify) {
+        if (newUser.pass !== passwordVerify) {
             vFailed = true;
             return res.json({
-                msg: `Passwords do not match`,
-                color: "danger"
+                msg: `Passwords do not match`
             });
         }
 
         // Validate username is not already in database
         db.User.count({
             where: {
-                username: newUser.username
+                uName: newUser.uName
             }
         }).then(function (uCount) {
             if (uCount != 0) {
                 vFailed = true;
                 return res.json({
-                    msg: `Username already in use`,
-                    color: "danger"
+                    msg: `Username already in use`
                 });
             }
 
@@ -136,26 +134,28 @@ module.exports = function (app, db) {
                 if (eCount != 0) {
                     vFailed = true;
                     return res.json({
-                        msg: `Email already in use`,
-                        color: "danger"
+                        msg: `Email already in use`
                     });
                 }
 
                 // Create new user if no validations failed
                 if (!vFailed) {
                     // Hash user password
-                    bcrypt.hash(password, saltRounds, function (err, hash) {
+                    bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
                         if (err) throw err;
+
+                        newUser.pass = hash;
 
                         // Insert new user into the database
                         db.User.create(newUser).then(function (result) {
                             // Log db record to server console
                             console.log(result);
 
+                            req.session.userID = result.id;
+
                             // Return success status to client
-                            res.status(200).json({
-                                msg: "Success!",
-                                color: "success"
+                            return res.status(200).json({
+                                msg: "Success!"
                             });
                         });
                     });
