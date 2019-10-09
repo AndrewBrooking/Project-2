@@ -1,13 +1,34 @@
 // Import bcrypt for password hashing
 const bcrypt = require("bcrypt");
+
 const usersUtil = require("../misc/usersUtil.js");
+
 const saltRounds = 10;
 
 module.exports = function (app, db) {
+    app.post('/create', (req, res) => {
+        db.Project.create({
+            name: req.body.proName,
+            desc: req.body.proDesc,
+            img: req.body.proImg,
+            UserId: req.session.userID
+        }).then(function (result) {
+            return res.redirect("/");
+        }).catch(function (err) {
+            console.log(err)
+        });
+    })
 
-    app.get("/register", function (req, res) {
-        return res.render("registration", {});
-    });
+
+    // question
+    app.post('/following', (req, res)=>{
+
+        console.log(req.body)
+        // db.Following.create({
+        // UserId: req.session.userID,
+        // ProjectId: req.body??
+    })
+
 
     app.post("/logout", function (req, res) {
         req.session.destroy(function (err) {
@@ -18,8 +39,8 @@ module.exports = function (app, db) {
 
     app.post("/login", function (req, res) {
         // Obtain user inputs
-        let username = ("" + req.body.username).trim().toLowerCase();
-        let password = ("" + req.body.password).trim();
+        let username = ("" + req.body.loginName).trim().toLowerCase();
+        let password = ("" + req.body.loginPassword).trim();
 
         // Find a matching entry
         db.User.findOne({
@@ -54,14 +75,14 @@ module.exports = function (app, db) {
 
     app.post("/register", function (req, res) {
         // Obtain user input values
+
         const newUser = {
-            uName: ("" + req.body.username).trim().toLowerCase(),
+            uName: ("" + req.body.name).trim().toLowerCase(),
             pass: ("" + req.body.password).trim(),
             email: ("" + req.body.email).trim().toLowerCase()
         };
 
         const passwordVerify = req.body.passwordVerify;
-
         let vFailed = false;
 
         // Validate username length
@@ -149,13 +170,15 @@ module.exports = function (app, db) {
                         // Insert new user into the database
                         db.User.create(newUser).then(function (result) {
                             // Log db record to server console
+<<<<<<< HEAD
+=======
+                            console.log(`result = ${result}`);
+>>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
                             req.session.userID = result.id;
-
+                            console.log(`req.session.userID = ${req.session.userID}`)
                             // Return success status to client
-                            return res.status(200).json({
-                                msg: "Success!"
-                            });
+                            return res.redirect("/");
                         });
                     });
                 }

@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 // Dependencies
+const url = require("url");
 const express = require("express");
 const exSession = require("express-session");
 const redis = require("redis");
@@ -14,12 +15,17 @@ const db = require("./models");
 const app = express();
 
 // Define session and redis constants
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const SESS_NAME = "sid";
 const SESS_SECRET = "pmp-secret-donotreveal";
 const SESS_LIFE = 1000 * 60 * 60;
+<<<<<<< HEAD
 const REDIS_HOST = /*url.parse(process.env.REDIS_URL).hostname ||*/ "localhost";
 const REDIS_PORT = /*Number(url.parse(process.env.REDIS_URL).port) || */6379;
+=======
+const REDIS_HOST = "localhost"; // url.parse(process.env.REDIS_URL).hostname || 
+const REDIS_PORT = 6379; // Number(url.parse(process.env.REDIS_URL).port) 
+>>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
 // Create redis client
 const client = redis.createClient();
@@ -69,7 +75,7 @@ if (process.env.NODE_ENV === "test") {
 
 // Starting the server, syncing our models
 db.sequelize.sync(syncOptions).then(function () {
-  app.listen(PORT, function () {
+  app.listen(4000, function () {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

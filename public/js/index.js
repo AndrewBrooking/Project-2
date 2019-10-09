@@ -1,3 +1,6 @@
+// index.js is not being called and not being used. 
+
+
 $(document).ready(() => {
 
     // Handle login submission
@@ -40,18 +43,23 @@ $(document).ready(() => {
             password: $("#passwordInput").val().toString().trim(),
             passwordVerify: $("#passwordVerify").val().toString().trim()
         };
-
+        console.log(`index js newUser = ${JSON.stringify(newUser)}`)
         // POST request to server
         $.post("/register", newUser).then((result) => {
+<<<<<<< HEAD
             console.log(result);
+=======
+
+            console.log(`index js post= result ${JSON.stringify(result)}`);
+>>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
             // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
 
             // Empty form values
-            $("#usernameInput").val("");
-            $("#emailInput").val("");
-            $("#passwordInput").val("");
-            $("#passwordVerify").val("");
+            // $("#usernameInput").val("");
+            // $("#emailInput").val("");
+            // $("#passwordInput").val("");
+            // $("#passwordVerify").val("");
         });
     });
 });
