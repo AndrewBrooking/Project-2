@@ -9,16 +9,9 @@ $(document).ready(() => {
             password: ("" + $("#passwordLogin").val()).trim()
         };
 
-        console.log(user);
-
-        // $("#loginMsgDiv").empty();
-
         $.post("/login", user).then((result) => {
             if (result === "sign-in-fail") {
-                // $("#loginMsgDiv").append(
-                //     `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
-                // );
-                console.log(result);
+                // TODO: Display error message
             }
 
             // Empty form values
@@ -31,7 +24,7 @@ $(document).ready(() => {
     $(document).on("click", "#registerUser", (event) => {
         event.preventDefault();
 
-        // $("#msgDiv").empty();
+        console.log("Register clicked");
 
         // Obtain user input values
         let newUser = {
@@ -42,17 +35,20 @@ $(document).ready(() => {
         };
 
         // POST request to server
-        $.post("/register", newUser).then((result) => {
-
+        $.post("/register/new", newUser).then((result) => {
             console.log(result);
+            
+            // Display success/error message
+            let message = $("span").text(result.msg);
+            $("#regMessages").empty().append(message);
 
-            // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
-
-            // Empty form values
-            $("#usernameInput").val("");
-            $("#emailInput").val("");
-            $("#passwordInput").val("");
-            $("#passwordVerify").val("");
+            if (!result.error) {
+                // Empty form values
+                $("#usernameInput").val("");
+                $("#emailInput").val("");
+                $("#passwordInput").val("");
+                $("#passwordVerify").val("");
+            }
         });
     });
 });
