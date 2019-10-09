@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 // Dependencies
+const url = require("url");
 const express = require("express");
 const exSession = require("express-session");
 const redis = require("redis");
