@@ -1,43 +1,58 @@
-// $(document).ready(() => {
+$(document).ready(() => {
 
-//     $(document).on("click", "#loginUser", (event) => {
-//         event.preventDefault();
+    // Handle login submission
+    $(document).on("click", "#loginUser", (event) => {
+        event.preventDefault();
 
-//         console.log("Login clicked");
+        let user = {
+            username: ("" + $("#usernameLogin").val()).trim(),
+            password: ("" + $("#passwordLogin").val()).trim()
+        };
 
-//         // TODO: Login user
+        console.log(user);
 
-//         // Empty form values
-//         $("#usernameLogin").val("");
-//         $("#passwordLogin").val("");
-//     });
+        // $("#loginMsgDiv").empty();
 
-//     // Handle user registration submission
-//     $(document).on("click", "#registerUser", (event) => {
-//         event.preventDefault();
+        $.post("/login", user).then((result) => {
+            if (result === "sign-in-fail") {
+                // $("#loginMsgDiv").append(
+                //     `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
+                // );
+                console.log(result);
+            }
 
-//         $("#msgDiv").empty();
+            // Empty form values
+            $("#usernameLogin").val("");
+            $("#passwordLogin").val("");
+        });
+    });
 
-//         // Obtain user input values
-//         let newUser = {
-//             username: $("#usernameInput").val().toString().trim(),
-//             email: $("#emailInput").val().toString().trim(),
-//             password: $("#passwordInput").val().toString().trim(),
-//             passwordVerify: $("#passwordVerify").val().toString().trim()
-//         };
+    // Handle user registration submission
+    $(document).on("click", "#registerUser", (event) => {
+        event.preventDefault();
 
-//         // POST request to server
-//         $.post("/register", newUser).then((result) => {
+        // $("#msgDiv").empty();
 
-//             console.log(result);
+        // Obtain user input values
+        let newUser = {
+            username: $("#usernameInput").val().toString().trim().toLowerCase(),
+            email: $("#emailInput").val().toString().trim().toLowerCase(),
+            password: $("#passwordInput").val().toString().trim(),
+            passwordVerify: $("#passwordVerify").val().toString().trim()
+        };
 
-//             $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+        // POST request to server
+        $.post("/register", newUser).then((result) => {
 
-//             // Empty form values
-//             $("#usernameInput").val("");
-//             $("#emailInput").val("");
-//             $("#passwordInput").val("");
-//             $("#passwordVerify").val("");
-//         });
-//     });
-// });
+            console.log(result);
+
+            // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+
+            // Empty form values
+            $("#usernameInput").val("");
+            $("#emailInput").val("");
+            $("#passwordInput").val("");
+            $("#passwordVerify").val("");
+        });
+    });
+});
