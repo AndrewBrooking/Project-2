@@ -16,8 +16,16 @@
             <ul>
                 <li><a href="/">Homepage</a></li>
                 <li><a href="/welcome">Register/Login</a></li>
-                <li><a href="elements.html">Following</a></li>
-                <li><a href="/create">Create Project</a></li>
+                <% if(loggedIn) {%>
+                <li><a href="/">Following</a></li>
+                <% } else { %>
+                <li><a href="/notloggedin">Following</a></li>
+                <% } %>
+                <% if(loggedIn) {%>
+                <li><a href="/create">Create</a></li>
+                <% } else { %>
+                <li><a href="/notloggedin">Create</a></li>
+                <% } %>
             </ul>
         </nav>
 
