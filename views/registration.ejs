@@ -10,20 +10,20 @@
 
 <section>
 
-    <form>
+    <form action='/register' method='POST'>
         <div class="row gtr-uniform">
             <div class="row gtr-uniform">
                 <div class="col-12 col-12-xsmall">
-                    <input type="text" id="usernameInput" value="" placeholder="Username" />
+                    <input type="text" id="usernameInput" value="" placeholder="Name" name='name'/>
                 </div>
                 <div class="col-12 col-12-xsmall">
-                    <input type="email" id="emailInput" value="" placeholder="Email" />
+                    <input type="email" id="emailInput" value="" placeholder="Email" name='email'/>
                 </div>
                 <div class="col-12 col-12-xsmall">
-                    <input type="password" id="passwordInput" value="" placeholder="Password" />
+                    <input type="password" id="passwordInput" value="" placeholder="password" name='password' />
                 </div>
                 <div class="col-12  col-12-xsmall">
-                    <input type="password" id="passwordVerify" value="" placeholder="Confirm Password" />
+                    <input type="password" id="passwordVerify" value="" placeholder="password" name='passwordVerify' />
                 </div>
             </div>
 
@@ -40,5 +40,4 @@
     </form>
 </section>
 
-<script src="/js/index.js"></script>
-<script src="/js/userPage.js"></script>
+
