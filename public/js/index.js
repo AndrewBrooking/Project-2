@@ -46,12 +46,8 @@ $(document).ready(() => {
         console.log(`index js newUser = ${JSON.stringify(newUser)}`)
         // POST request to server
         $.post("/register", newUser).then((result) => {
-<<<<<<< HEAD
-            console.log(result);
-=======
 
             console.log(`index js post= result ${JSON.stringify(result)}`);
->>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
             // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
 
@@ -61,5 +57,6 @@ $(document).ready(() => {
             // $("#passwordInput").val("");
             // $("#passwordVerify").val("");
         });
+        
     });
 });

@@ -170,10 +170,7 @@ module.exports = function (app, db) {
                         // Insert new user into the database
                         db.User.create(newUser).then(function (result) {
                             // Log db record to server console
-<<<<<<< HEAD
-=======
                             console.log(`result = ${result}`);
->>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
                             req.session.userID = result.id;
                             console.log(`req.session.userID = ${req.session.userID}`)

@@ -7,7 +7,6 @@ const exSession = require("express-session");
 const redis = require("redis");
 const redisStore = require("connect-redis")(exSession);
 const expressLayouts = require("express-ejs-layouts");
-const url = require('url')
 // Sequelize models
 const db = require("./models");
 
@@ -19,13 +18,8 @@ const PORT = process.env.PORT || 4000;
 const SESS_NAME = "sid";
 const SESS_SECRET = "pmp-secret-donotreveal";
 const SESS_LIFE = 1000 * 60 * 60;
-<<<<<<< HEAD
-const REDIS_HOST = /*url.parse(process.env.REDIS_URL).hostname ||*/ "localhost";
-const REDIS_PORT = /*Number(url.parse(process.env.REDIS_URL).port) || */6379;
-=======
 const REDIS_HOST = "localhost"; // url.parse(process.env.REDIS_URL).hostname || 
 const REDIS_PORT = 6379; // Number(url.parse(process.env.REDIS_URL).port) 
->>>>>>> cf4a04e836503316a5232aa17de139f2a710cdd3
 
 // Create redis client
 const client = redis.createClient();
