@@ -1,32 +1,34 @@
 <section id="banner">
     <div class="content">
         <header>
-            <h1>User Login<br />
-            </h1>
+            <h1>User Login</h1>
         </header>
+
+        <br>
+
         <p>Please input email and password</p>
     </div>
 </section>
 
 <section>
-
     <form>
         <div class="row gtr-uniform">
             <div class="row gtr-uniform">
                 <div class="col-12 col-12-xsmall">
-                    <input type="text" id="usernameLogin" value="" placeholder="Username" />
+                    <input name='loginName' type="text" id="usernameLogin" value="" placeholder="Username">
                 </div>
 
                 <div class="col-12 col-12-xsmall">
-                    <input type="password" id="passwordLogin" value="" placeholder="Password" />
+                    <input name='loginPassword' type="password" id="passwordLogin" value="" placeholder="Password">
                 </div>
 
                 <!-- Break -->
                 <div class="col-12">
                     <ul class="actions">
-                        <li><input type="submit" id="loginUser" value="Submit" class="primary" /></li>
+                        <li><input type="submit" id="loginUser" value="Submit" class="primary"></li>
                     </ul>
                 </div>
             </div>
+        </div>
     </form>
 </section>

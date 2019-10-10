@@ -1,16 +1,28 @@
 // Import bcrypt for password hashing
 const bcrypt = require("bcrypt");
+
 const usersUtil = require("../misc/usersUtil.js");
 
 const saltRounds = 10;
 
 module.exports = function (app, db) {
+    app.post('/create', (req, res) => {
+        db.Project.create({
+            name: req.body.proName,
+            desc: req.body.proDesc,
+            img: req.body.proImg,
+            UserId: 1
+        }).then(function (result) {
+            return res.status(200).json({
+                msg: "Success!"
+            });
+        }).catch(function (err) {
+            console.log(err)
+        });
+    })
 
-    app.get("/register", function (req, res) {
-        return res.render("registration", {});
-    });
 
-    app.post("/logout", function (req, res) {
+    app.get("/logout", function (req, res) {
         req.session.destroy(function (err) {
             if (err) throw err;
 
@@ -20,8 +32,8 @@ module.exports = function (app, db) {
 
     app.post("/login", function (req, res) {
         // Obtain user inputs
-        let username = ("" + req.body.username).trim().toLowerCase();
-        let password = ("" + req.body.password).trim();
+        let username = ("" + req.body.loginName).trim().toLowerCase();
+        let password = ("" + req.body.loginPassword).trim();
 
         // Find a matching entry
         db.User.findOne({
@@ -56,8 +68,9 @@ module.exports = function (app, db) {
 
     app.post("/register/new", function (req, res) {
         // Obtain user input values
+
         const newUser = {
-            uName: ("" + req.body.username).trim().toLowerCase(),
+            uName: ("" + req.body.name).trim().toLowerCase(),
             pass: ("" + req.body.password).trim(),
             email: ("" + req.body.email).trim().toLowerCase()
         };
