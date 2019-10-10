@@ -6,31 +6,23 @@ const usersUtil = require("../misc/usersUtil.js");
 const saltRounds = 10;
 
 module.exports = function (app, db) {
-    app.post('/create', (req, res) => {
+    app.post('/create', (req, res)=>{
         db.Project.create({
             name: req.body.proName,
             desc: req.body.proDesc,
             img: req.body.proImg,
-            UserId: req.session.userID
+            UserId: 1
         }).then(function (result) {
-            return res.redirect("/");
+            return res.status(200).json({
+                msg: "Success!"
+            });
         }).catch(function (err) {
             console.log(err)
         });
     })
 
 
-    // question
-    app.post('/following', (req, res)=>{
-
-        console.log(req.body)
-        // db.Following.create({
-        // UserId: req.session.userID,
-        // ProjectId: req.body??
-    })
-
-
-    app.post("/logout", function (req, res) {
+    app.get("/logout", function (req, res) {
         req.session.destroy(function (err) {
             if (err) throw err;
             return res.redirect("/");
@@ -82,104 +74,132 @@ module.exports = function (app, db) {
             email: ("" + req.body.email).trim().toLowerCase()
         };
 
-        const passwordVerify = req.body.passwordVerify;
+        //     const passwordVerify = req.body.passwordVerify;
+
         let vFailed = false;
 
         // Validate username length
-        if (newUser.uName.length < usersUtil.nameMinLength || newUser.uName.length > usersUtil.nameMaxLength) {
-            vFailed = true;
-            return res.json({
-                msg: `Username must be between ${usersUtil.nameMinLength} and ${usersUtil.nameMaxLength} characters`
-            });
-        }
+        // if (newUser.uName.length < usersUtil.nameMinLength || newUser.uName.length > usersUtil.nameMaxLength) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Username must be between ${usersUtil.nameMinLength} and ${usersUtil.nameMaxLength} characters`
+        //     });
+        // }
 
-        // Validate username does not have special characters
-        if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(newUser.uName)) {
-            vFailed = true;
-            return res.json({
-                msg: `Username cannot contain any special characters`
-            });
-        }
+        // // Validate username does not have special characters
+        // if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(newUser.uName)) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Username cannot contain any special characters`
+        //     });
+        // }
 
-        // Validate email length
-        if (newUser.email.length < usersUtil.emailMinLength || newUser.email.length > usersUtil.emailMaxLength) {
-            vFailed = true;
-            return res.json({
-                msg: `Email address must be between ${usersUtil.emailMinLength} and ${usersUtil.emailMaxLength} characters`
-            });
-        }
+        // // Validate email length
+        // if (newUser.email.length < usersUtil.emailMinLength || newUser.email.length > usersUtil.emailMaxLength) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Email address must be between ${usersUtil.emailMinLength} and ${usersUtil.emailMaxLength} characters`
+        //     });
+        // }
 
-        // Validate email format
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newUser.email)) {
-            vFailed = true;
-            return res.json({
-                msg: `Email address provided is not valid`
-            });
-        }
+        // // Validate email format
+        // if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newUser.email)) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Email address provided is not valid`
+        //     });
+        // }
 
-        // Validate password length
-        if (newUser.pass.length < usersUtil.passMinLength || newUser.pass.length > usersUtil.passMaxLength) {
-            vFailed = true;
-            return res.json({
-                msg: `Password must be between ${usersUtil.passMinLength} and ${usersUtil.passMaxLength} characters`
-            });
-        }
+        // // Validate password length
+        // if (newUser.pass.length < usersUtil.passMinLength || newUser.pass.length > usersUtil.passMaxLength) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Password must be between ${usersUtil.passMinLength} and ${usersUtil.passMaxLength} characters`
+        //     });
+        // }
 
-        // Validate password and password verification match
-        if (newUser.pass !== passwordVerify) {
-            vFailed = true;
-            return res.json({
-                msg: `Passwords do not match`
-            });
-        }
+        // // Validate password and password verification match
+        // if (newUser.pass !== passwordVerify) {
+        //     vFailed = true;
+        //     return res.json({
+        //         msg: `Passwords do not match`
+        //     });
+        // }
 
+        // if (!vFailed) {
+        // Hash user password
+
+        // bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
+        //     if (err) throw err;
+
+        //     newUser.pass = hash;
+
+        //     // Insert new user into the database
+        //     db.User.create(newUser).then(function(result) {
+        //         // Log db record to server console
+        //         // console.log(result);
+
+        //         req.session.userID = result.id;
+
+        //         // Return success status to client
+        //         return res.status(200).json({
+        //             msg: "Success!"
+        //         });
+        //     }).catch(function(err) {
+        //         console.log(err)
+        //     });
+        // });
+        // }
         // Validate username is not already in database
-        db.User.count({
-            where: {
-                uName: newUser.uName
-            }
-        }).then(function (uCount) {
-            if (uCount != 0) {
-                vFailed = true;
-                return res.json({
-                    msg: `Username already in use`
+        // db.User.count({
+        //     where: {
+        //         uName: newUser.uName
+        //     }
+        // }).then(function (uCount) {
+        //     if (uCount !== 0) {
+        //         vFailed = true;
+        //         return res.json({
+        //             msg: `Username already in use`
+        //         });
+        //     }
+
+        //     // Validate email is not already in database
+        //     db.User.count({
+        //         where: {
+        //             email: newUser.email
+        //         }
+        //     }).then(function (eCount) {
+        //         if (eCount !== 0) {
+        //             vFailed = true;
+        //             return res.json({
+        //                 msg: `Email already in use`
+        //             });
+        //         }
+
+        //         // Create new user if no validations failed
+        if (!vFailed) {
+            // Hash user password
+            bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
+                if (err) throw err;
+
+                newUser.pass = hash;
+
+                // Insert new user into the database
+                db.User.create(newUser).then(function (result) {
+                    // Log db record to server console
+                    console.log(`second userRoutes db create newUser =${JSON.stringify(newUser)}`)
+                    console.log(`userRoutes result = ${JSON.stringify(result)}`);
+
+                    req.session.userID = result.id;
+
+                    // Return success status to client
+                    return res.redirect("/");
+                }).catch(function (err) {
+                    console.log(err)
                 });
-            }
-
-            // Validate email is not already in database
-            db.User.count({
-                where: {
-                    email: newUser.email
-                }
-            }).then(function (eCount) {
-                if (eCount != 0) {
-                    vFailed = true;
-                    return res.json({
-                        msg: `Email already in use`
-                    });
-                }
-
-                // Create new user if no validations failed
-                if (!vFailed) {
-                    // Hash user password
-                    bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
-                        if (err) throw err;
-
-                        newUser.pass = hash;
-
-                        // Insert new user into the database
-                        db.User.create(newUser).then(function (result) {
-                            // Log db record to server console
-                            console.log(`result = ${result}`);
-
-                            req.session.userID = result.id;
-                            console.log(`req.session.userID = ${req.session.userID}`)
-                            // Return success status to client
-                            return res.redirect("/");
-                        });
-                    });
-                }
             });
-        });
+        }
+        //     })
+        // })
     });
 };
