@@ -17,7 +17,7 @@
                 <li><a href="/">Homepage</a></li>
                 <li><a href="/welcome">Register/Login</a></li>
                 <% if(loggedIn) {%>
-                <li><a href="/">Following</a></li>
+                <li><a href="/following">Following</a></li>
                 <% } else { %>
                 <li><a href="/notloggedin">Following</a></li>
                 <% } %>
@@ -26,6 +26,10 @@
                 <% } else { %>
                 <li><a href="/notloggedin">Create</a></li>
                 <% } %>
+                <% if(loggedIn) {%>
+                <li><a href="/logout">Log Out</a></li>
+                <% } %>
+
             </ul>
         </nav>
 

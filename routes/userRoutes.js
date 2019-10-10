@@ -11,26 +11,18 @@ module.exports = function (app, db) {
             name: req.body.proName,
             desc: req.body.proDesc,
             img: req.body.proImg,
-            UserId: req.session.userID
+            UserId: 1
         }).then(function (result) {
-            return res.redirect("/");
+            return res.status(200).json({
+                msg: "Success!"
+            });
         }).catch(function (err) {
             console.log(err)
         });
     })
 
 
-    // question
-    app.post('/following', (req, res)=>{
-
-        console.log(req.body)
-        // db.Following.create({
-        // UserId: req.session.userID,
-        // ProjectId: req.body??
-    })
-
-
-    app.post("/logout", function (req, res) {
+    app.get("/logout", function (req, res) {
         req.session.destroy(function (err) {
             if (err) throw err;
             return res.redirect("/");
@@ -83,6 +75,7 @@ module.exports = function (app, db) {
         };
 
         const passwordVerify = req.body.passwordVerify;
+
         let vFailed = false;
 
         // Validate username length
@@ -139,7 +132,7 @@ module.exports = function (app, db) {
                 uName: newUser.uName
             }
         }).then(function (uCount) {
-            if (uCount != 0) {
+            if (uCount !== 0) {
                 vFailed = true;
                 return res.json({
                     msg: `Username already in use`
@@ -152,7 +145,7 @@ module.exports = function (app, db) {
                     email: newUser.email
                 }
             }).then(function (eCount) {
-                if (eCount != 0) {
+                if (eCount !== 0) {
                     vFailed = true;
                     return res.json({
                         msg: `Email already in use`
@@ -164,22 +157,20 @@ module.exports = function (app, db) {
                     // Hash user password
                     bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
                         if (err) throw err;
-
                         newUser.pass = hash;
-
                         // Insert new user into the database
                         db.User.create(newUser).then(function (result) {
                             // Log db record to server console
-                            console.log(`result = ${result}`);
-
+                            console.log(result);
                             req.session.userID = result.id;
-                            console.log(`req.session.userID = ${req.session.userID}`)
                             // Return success status to client
                             return res.redirect("/");
+                        }).catch(function (err) {
+                            console.log(err)
                         });
                     });
                 }
-            });
-        });
+            })
+        })
     });
 };

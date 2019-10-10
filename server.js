@@ -15,7 +15,7 @@ const db = require("./models");
 const app = express();
 
 // Define session and redis constants
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 const SESS_NAME = "sid";
 const SESS_SECRET = "pmp-secret-donotreveal";
 const SESS_LIFE = 1000 * 60 * 60;
@@ -70,7 +70,7 @@ if (process.env.NODE_ENV === "test") {
 
 // Starting the server, syncing our models
 db.sequelize.sync(syncOptions).then(function () {
-  app.listen(4000, function () {
+  app.listen(PORT, function () {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

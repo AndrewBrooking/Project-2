@@ -1,1 +1,5 @@
 node_modules
+breakpoints.min.js
+browser.min.js
+jquery.min.js
+main.js
