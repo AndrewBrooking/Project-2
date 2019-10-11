@@ -6,28 +6,37 @@
 
         <br>
 
-        <p>Please input email and password</p>
+        <p>Please input username and password</p>
     </div>
 </section>
 
 <section>
-    <form>
+    <div class="row gtr-uniform">
+        <div class="col-5">
+            <% if(error) { %>
+            <span class="error">
+                <%= msg %>
+            </span>
+            <% } %>
+        </div>
+    </div>
+
+    <form method="POST" action="/login">
         <div class="row gtr-uniform">
-            <div class="row gtr-uniform">
-                <div class="col-12 col-12-xsmall">
-                    <input name='loginName' type="text" id="usernameLogin" value="" placeholder="Username">
-                </div>
 
-                <div class="col-12 col-12-xsmall">
-                    <input name='loginPassword' type="password" id="passwordLogin" value="" placeholder="Password">
-                </div>
+            <div class="col-12 col-12-xsmall">
+                <input name='loginName' type="text" id="usernameLogin" value="" placeholder="Username">
+            </div>
 
-                <!-- Break -->
-                <div class="col-12">
-                    <ul class="actions">
-                        <li><input type="submit" id="loginUser" value="Submit" class="primary"></li>
-                    </ul>
-                </div>
+            <div class="col-12 col-12-xsmall">
+                <input name='loginPassword' type="password" id="passwordLogin" value="" placeholder="Password">
+            </div>
+
+            <!-- Break -->
+            <div class="col-12">
+                <ul class="actions">
+                    <li><input type="submit" id="loginUser" value="Submit" class="primary"></li>
+                </ul>
             </div>
         </div>
     </form>

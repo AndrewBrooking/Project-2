@@ -4,19 +4,31 @@ $(document).ready(() => {
     $(document).on("click", "#loginUser", (event) => {
         event.preventDefault();
 
+        // Clear error messages
+        $("#loginMessages").empty();
+
         let user = {
             username: ("" + $("#usernameLogin").val()).trim(),
             password: ("" + $("#passwordLogin").val()).trim()
         };
 
         $.post("/login", user).then((result) => {
-            if (result === "sign-in-fail") {
-                // TODO: Display error message
+            if (result.error) {
+                // Set success/error message
+                let message = $("span").text(result.msg);
+
+                // Set bg color to red
+                message.addClass("red-bg");
+
+                // Append error message
+                $("#loginMessages").append(message);
             }
 
             // Empty form values
             $("#usernameLogin").val("");
             $("#passwordLogin").val("");
+
+            location.reload();
         });
     });
 
@@ -24,31 +36,39 @@ $(document).ready(() => {
     $(document).on("click", "#registerUser", (event) => {
         event.preventDefault();
 
-        console.log("Register clicked");
-
         // Obtain user input values
         let newUser = {
-            username: $("#usernameInput").val().toString().trim().toLowerCase(),
-            email: $("#emailInput").val().toString().trim().toLowerCase(),
-            password: $("#passwordInput").val().toString().trim(),
-            passwordVerify: $("#passwordVerify").val().toString().trim()
+            username: ("" + $("#usernameInput").val()).trim().toLowerCase(),
+            email: ("" + $("#emailInput").val()).trim().toLowerCase(),
+            password: ("" + $("#passwordInput").val()).trim(),
+            passwordVerify: ("" + $("#passwordVerify").val()).trim()
         };
-        console.log(`index js newUser = ${JSON.stringify(newUser)}`)
+
         // POST request to server
-        $.post("/register/new", newUser).then((result) => {
-            console.log(result);
-            
-            // Display success/error message
+        $.post("/register", newUser).then((result) => {
+            // Set success/error message
             let message = $("span").text(result.msg);
-            $("#regMessages").empty().append(message);
 
             if (!result.error) {
+                // Set bg color to green
+                message.addClass("green-bg");
+
                 // Empty form values
                 $("#usernameInput").val("");
                 $("#emailInput").val("");
                 $("#passwordInput").val("");
                 $("#passwordVerify").val("");
+            } else {
+                // Set bg color to red
+                message.addClass("red-bg");
             }
+
+            // Clear success/error message area then append the message
+            //$("#regMessages").append(message);
+
+            //console.log(message);
+
+            // location.reload();
         });
     });
 });

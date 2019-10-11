@@ -1,26 +1,33 @@
 // Import bcrypt for password hashing
 const bcrypt = require("bcrypt");
-
 const usersUtil = require("../misc/usersUtil.js");
-
 const saltRounds = 10;
 
 module.exports = function (app, db) {
-    app.post('/create', (req, res) => {
-        db.Project.create({
-            name: req.body.proName,
-            desc: req.body.proDesc,
-            img: req.body.proImg,
-            UserId: 1
-        }).then(function (result) {
-            return res.status(200).json({
-                msg: "Success!"
-            });
-        }).catch(function (err) {
-            console.log(err)
-        });
-    })
 
+    app.get('/login', function (req, res) {
+        let authenticated = false;
+        if (typeof req.session.userID === 'number') {
+            authenticated = true;
+        }
+        res.render('login', {
+            loggedIn: authenticated, // == authenticated == logic for true or false
+            error: false,
+            msg: ""
+        })
+    });
+
+    app.get("/register", function (req, res) {
+        let authenticated = false;
+        if (typeof req.session.userID === 'number') {
+            authenticated = true;
+        }
+        return res.render("registration", {
+            loggedIn: authenticated,
+            error: false,
+            msg: ""
+        });
+    });
 
     app.get("/logout", function (req, res) {
         req.session.destroy(function (err) {
@@ -43,7 +50,12 @@ module.exports = function (app, db) {
         }).then(function (user) {
             if (user == undefined || user == null) {
                 console.log("Could not login user: " + username);
-                return res.status(400);
+
+                return res.json({
+                    loggedIn: false,
+                    error: true,
+                    msg: `Username/password incorrect`
+                });
             }
 
             // Compare passwords
@@ -60,42 +72,57 @@ module.exports = function (app, db) {
                     return res.redirect("/");
                 } else {
                     console.log("Could not login user: " + username);
-                    return res.status(400);
+
+                    return res.json({
+                        loggedIn: false,
+                        error: true,
+                        msg: `Username/password incorrect`
+                    });
                 }
             });
         });
     });
 
-    app.post("/register/new", function (req, res) {
+    app.post("/register", function (req, res) {
         // Obtain user input values
-
         const newUser = {
-            uName: ("" + req.body.name).trim().toLowerCase(),
+            uName: ("" + req.body.username).trim().toLowerCase(),
             pass: ("" + req.body.password).trim(),
             email: ("" + req.body.email).trim().toLowerCase()
         };
 
+        console.log(newUser);
+
         const passwordVerify = ("" + req.body.passwordVerify).trim();
+
+        // console.log("Validating username");
 
         // Validate username
         if (!validateUsername(newUser.uName)) {
-            return res.json({
+            return res.render("registration", {
+                loggedIn: false,
                 error: true,
                 msg: `Username does not meet length requirements or contains special characters.`
             });
         }
 
+        // console.log("Validating email");
+
         // Validate email
         if (!validateEmail(newUser.email)) {
-            return res.json({
+            return res.render("registration", {
+                loggedIn: false,
                 error: true,
                 msg: `Email address does not meet length requirements or is not a valid email format.`
             });
         }
 
+        // console.log("Validating password");
+
         // Validate password
         if (!validatePassword(newUser.pass, passwordVerify)) {
-            return res.json({
+            return res.render("registration", {
+                loggedIn: false,
                 error: true,
                 msg: `Password does not meet length requirements or does not match with the password confirmation.`
             });
@@ -103,16 +130,26 @@ module.exports = function (app, db) {
 
         // Validate username is not already in database
         usernameExists(newUser.uName, function (usernameTaken) {
+            // console.log("Validating username taken");
+
             if (usernameTaken) {
-                return res.json({
+                console.log("Registration Error: username taken");
+
+                return res.render("registration", {
+                    loggedIn: false,
                     error: true,
                     msg: `Username already in use.`
                 });
             } else {
                 // Validate email is not already in database
                 emailExists(newUser.email, function (emailTaken) {
+                    // console.log("Validating username taken");
+
                     if (emailTaken) {
-                        return res.json({
+                        console.log("Registration Error: email taken");
+
+                        return res.render("registration", {
+                            loggedIn: false,
                             error: true,
                             msg: `Email already in use.`
                         });
@@ -120,6 +157,8 @@ module.exports = function (app, db) {
                         try {
                             // Hash user password
                             bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
+                                // console.log("Hashing password");
+
                                 if (err) throw err;
 
                                 newUser.pass = hash;
@@ -132,16 +171,14 @@ module.exports = function (app, db) {
                                     req.session.userID = result.id;
 
                                     // Return success status to client
-                                    return res.json({
-                                        error: false,
-                                        msg: "Success!"
-                                    });
+                                    return res.redirect("/");
                                 });
                             });
                         } catch (error) {
                             console.log(error);
 
-                            return res.json({
+                            return res.render("registration", {
+                                loggedIn: false,
                                 error: true,
                                 msg: `Server Error: Could not register new user.`
                             });
@@ -171,22 +208,24 @@ module.exports = function (app, db) {
     }
 
     function usernameExists(username, cb) {
-        db.User.count({
+        db.User.findOne({
             where: {
                 uName: username
             }
-        }).then(function (uCount) {
-            cb(uCount != 0);
+        }).then(function (result) {
+            console.log(result);
+            cb(result !== null);
         });
     }
 
     function emailExists(email, cb) {
-        db.User.count({
+        db.User.findOne({
             where: {
                 email: email
             }
-        }).then(function (eCount) {
-            cb(eCount != 0);
+        }).then(function (result) {
+            console.log(result);
+            cb(result !== null);
         });
     }
 };

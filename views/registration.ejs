@@ -11,11 +11,22 @@
 </section>
 
 <section>
-    <form>
+
+    <div class="row gtr-uniform">
+        <div class="col-5">
+            <% if(error) { %>
+            <span class="error">
+                <%= msg %>
+            </span>
+            <% } %>
+        </div>
+    </div>
+
+    <form method="POST" action="/register">
         <div class="row gtr-uniform">
             <div class="row gtr-uniform">
                 <div class="col-12 col-12-xsmall">
-                    <input type="text" id="usernameInput" value="" placeholder="Name" name='name'>
+                    <input type="text" id="usernameInput" value="" placeholder="Name" name='username'>
                 </div>
                 <div class="col-12 col-12-xsmall">
                     <input type="email" id="emailInput" value="" placeholder="Email" name='email'>

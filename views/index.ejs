@@ -4,19 +4,20 @@
 
     <header>
       <% if(loggedIn) {%>
-        <h1>Hi <%= userResult.uName %>, Welcome to PayMyProject</h1>
-        <br>
+      <h1>Hi <%= userResult.uName %>, Welcome to PayMyProject</h1>
+      <br>
       <% } else { %>
-        <h1>Hi Guest, Welcome to PayMyProject</h1>
-        <br>
+      <h1>Hi Guest, Welcome to PayMyProject</h1>
+      <br>
       <% } %>
 
       <p>A fully responsive site to support your favorite content/project creators</p>
 
     </header>
 
-    <p>Please create a user account to follow and/or donate to your favorite projects.
-      Or just browse current projects as a guest!</p>
+    <% if(!loggedIn) {%>
+    <p>Please create a user account to follow and donate to your favorite projects.</p>
+    <% } %>
   </div>
 
 </section>
