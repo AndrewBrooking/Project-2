@@ -130,18 +130,30 @@ module.exports = function (app, db) {
         ]
       }
     }).then((result) => {
-      res.render("index", {
-        msg: result,
-        loggedIn: authenticated //logic for true or false
-      });
+      db.User.findOne({
+        where: {
+          id: req.session.userID
+        },
+      }).then(function (userResult) {
+        if (!userResult) {
+          userResult = 'nothing'
+        }
+
+        res.render('index', {
+          msg: result,
+          authenticated: authenticated,
+          loggedIn: authenticated,
+          userResult: userResult
+        })
+      })
+      // res.render("index", {
+      //   msg: result,
+      //   loggedIn: authenticated //logic for true or false
+      // });
     })
   });
 
-  // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
-    res.send("404");
-  });
-
+  
   app.post('/create', (req, res) => {
     db.Project.create({
       name: req.body.proName,
@@ -155,5 +167,11 @@ module.exports = function (app, db) {
     }).catch(function (err) {
       console.log(err)
     });
+  });
+
+  
+  // Render 404 page for any unmatched routes
+  app.get("*", function (req, res) {
+    res.send("404");
   });
 };
