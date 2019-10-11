@@ -186,21 +186,7 @@ module.exports = function (app, db) {
     })
   });
 
-  
-  app.post('/create', (req, res) => {
-    db.Project.create({
-      name: req.body.proName,
-      desc: req.body.proDesc,
-      img: req.body.proImg,
-      UserId: 1
-    }).then(function (result) {
-      return res.status(200).json({
-        msg: "Success!"
-      });
-    }).catch(function (err) {
-      console.log(err)
-    });
-  });
+
 
   
   // Render 404 page for any unmatched routes

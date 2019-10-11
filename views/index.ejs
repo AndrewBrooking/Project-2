@@ -1,3 +1,10 @@
+<script>
+let foo = (e)=>{
+  let blah = e.target;
+  $(blah).attr('type', 'hidden')
+}
+</script>
+
 <section id="banner">
 
   <div class="content">
@@ -45,7 +52,7 @@
         <% if(loggedIn) {%>
           <form action="/following" method="post">
             <input name="upvote" type="hidden" value="<%= item.id %>"/> 
-            <input type="submit" value="Follow" id='followed'/>
+            <input type="submit" value="Follow" id='followed' onclick="event.preventDefault(); foo(event)"/>
             </form>
           <% } %>
 
