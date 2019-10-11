@@ -11,7 +11,7 @@ module.exports = function (app, db) {
             name: req.body.proName,
             desc: req.body.proDesc,
             img: req.body.proImg,
-            UserId: 1
+            UserId: req.session.userID
         }).then(function (result) {
             return res.status(200).json({
                 msg: "Success!"
@@ -20,7 +20,14 @@ module.exports = function (app, db) {
             console.log(err)
         });
     })
-
+    app.post('/following', (req, res)=>{
+        db.Following.create({
+            UserId: req.session.userID,
+            ProjectId: req.body.upvote,
+        }).then(function(result) {
+            return res.redirect('/')
+        })
+    })
 
     app.get("/logout", function (req, res) {
         req.session.destroy(function (err) {
