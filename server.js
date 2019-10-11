@@ -57,6 +57,7 @@ app.use(expressLayouts);
 require("./routes/apiRoutes.js")(app, db);
 require("./routes/userRoutes.js")(app, db);
 require("./routes/htmlRoutes.js")(app, db);
+require("./routes/stripeRoutes.js")(app, db);
 
 const syncOptions = {
   force: false

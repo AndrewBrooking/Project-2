@@ -1,0 +1,45 @@
+<section></section>
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1>FUND THIS PROJECT</h1>
+            <form action="/addCustomerAndCharge" method="post" id="payment-form">
+                <div class="form-row">
+                    <label for="uName">name</label>
+                    <div id="uName">
+                        <input type="text"  name="uName">
+                    </div>
+                    <label for="email">email</label>
+                    <div id="email">
+                        <input type="text"  name="email">
+                    </div>
+                  <label for="card-element">
+                    Credit or debit card
+                  </label>
+                  <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+              
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert"></div>
+                </div>
+                <input type="text" name="oiDis">
+                <button>Submit Payment</button>
+              </form>
+            <button>FUND!</button>
+            
+            <h1 class="display-4">Project: <h1 id="projectName"><%=msg.name%></h1></h1>
+            <p class="lead"> Description: <h4><%=msg.desc%></h4></p>
+            <li>Creator:  <h5><%= msg.User.uName %></h5></li>
+            <li>Creator Email: <h5><%= msg.User.email %></h5></li>
+            <li>Creation Date: <h5><%= msg.createdAt %></h5></li>
+        </div>
+    </div>
+    <br>
+    <br>
+<section>
+        <a class="image"><img src="<%=msg.img%>" alt="" /></a>
+
+    </section>
+
+</div>

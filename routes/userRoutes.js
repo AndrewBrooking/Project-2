@@ -11,7 +11,7 @@ module.exports = function (app, db) {
             name: req.body.proName,
             desc: req.body.proDesc,
             img: req.body.proImg,
-            UserId: 1
+            UserId: req.session.userID
         }).then(function (result) {
             return res.status(200).json({
                 msg: "Success!"

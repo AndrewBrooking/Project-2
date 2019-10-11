@@ -218,6 +218,7 @@
   });
   //--------------------------------------//
   $("#fund").on("click", function(event) {
-    console.log("hello");
+   let projectName = $('#projectName').text()
+    $.post('/chargeUser', {proName: projectName})
   });
 })(jQuery);

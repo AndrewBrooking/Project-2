@@ -94,6 +94,23 @@ app.get('/project/:id', function (req, res) {
     })
   });
 });
+app.get('/project/:id/fund', function (req, res) {
+  let authenticated = false;
+  if (typeof req.session.userID === 'number') {
+    authenticated = true;
+  }
+  db.Project.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: db.User
+  }).then(function (result) {
+    res.render("fund", {
+      msg: result,
+      loggedIn: authenticated // == authenticated == logic for true or false
+    })
+  });
+});
 
 app.get('/following', function (req, res) {
   let authenticated = false;
