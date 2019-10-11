@@ -45,7 +45,7 @@
         <% if(loggedIn) {%>
           <form action="/following" method="post">
             <input name="upvote" type="hidden" value="<%= item.id %>"/> 
-            <input type="submit" value="Follow" />
+            <input type="submit" value="Follow" id='followed'/>
             </form>
           <% } %>
 

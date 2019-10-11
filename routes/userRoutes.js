@@ -21,7 +21,7 @@ module.exports = function (app, db) {
             UserId: req.session.userID,
             ProjectId: req.body.upvote,
         }).then(function (result) {
-            return res.redirect('/')
+            return res.redirect('/following')
         }).catch(function(err) {
             res.json(err)
         });

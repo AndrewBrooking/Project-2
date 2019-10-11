@@ -15,8 +15,9 @@
             </header>
             <ul>
                 <li><a href="/">Homepage</a></li>
+                <% if(!loggedIn) {%>
                 <li><a href="/welcome">Register/Login</a></li>
-
+                <% } %>
                 <% if(loggedIn) {%>
                 <li><a href="/following">Following</a></li>
                 <li><a href="/create">Create</a></li>
