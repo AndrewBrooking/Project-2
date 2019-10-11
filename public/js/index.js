@@ -1,32 +1,34 @@
-// index.js is not being called and not being used. 
-
-
 $(document).ready(() => {
 
     // Handle login submission
     $(document).on("click", "#loginUser", (event) => {
         event.preventDefault();
 
+        // Clear error messages
+        $("#loginMessages").empty();
+
         let user = {
             username: ("" + $("#usernameLogin").val()).trim(),
             password: ("" + $("#passwordLogin").val()).trim()
         };
 
-        console.log(user);
-
-        // $("#loginMsgDiv").empty();
-
         $.post("/login", user).then((result) => {
-            if (result === "sign-in-fail") {
-                // $("#loginMsgDiv").append(
-                //     `<div class="alert alert-fail" role="alert">Username or password is incorrect</div>`
-                // );
-                console.log(result);
+            if (result.error) {
+                // Set success/error message
+                let message = $("span").text(result.msg);
+
+                // Set bg color to red
+                message.addClass("red-bg");
+
+                // Append error message
+                $("#loginMessages").append(message);
             }
 
             // Empty form values
             $("#usernameLogin").val("");
             $("#passwordLogin").val("");
+
+            location.reload();
         });
     });
 
@@ -34,28 +36,39 @@ $(document).ready(() => {
     $(document).on("click", "#registerUser", (event) => {
         event.preventDefault();
 
-        // $("#msgDiv").empty();
-
         // Obtain user input values
         let newUser = {
-            username: $("#usernameInput").val().toString().trim().toLowerCase(),
-            email: $("#emailInput").val().toString().trim().toLowerCase(),
-            password: $("#passwordInput").val().toString().trim(),
-            passwordVerify: $("#passwordVerify").val().toString().trim()
+            username: ("" + $("#usernameInput").val()).trim().toLowerCase(),
+            email: ("" + $("#emailInput").val()).trim().toLowerCase(),
+            password: ("" + $("#passwordInput").val()).trim(),
+            passwordVerify: ("" + $("#passwordVerify").val()).trim()
         };
-        console.log(`index js newUser = ${JSON.stringify(newUser)}`)
+
         // POST request to server
         $.post("/register", newUser).then((result) => {
+            // Set success/error message
+            let message = $("span").text(result.msg);
 
-            console.log(`index js post= result ${JSON.stringify(result)}`);
+            if (!result.error) {
+                // Set bg color to green
+                message.addClass("green-bg");
 
-            // $("#msgDiv").append(`<div class="alert alert-${result.color}" role="alert">${result.msg}</div>`);
+                // Empty form values
+                $("#usernameInput").val("");
+                $("#emailInput").val("");
+                $("#passwordInput").val("");
+                $("#passwordVerify").val("");
+            } else {
+                // Set bg color to red
+                message.addClass("red-bg");
+            }
 
-            // Empty form values
-            // $("#usernameInput").val("");
-            // $("#emailInput").val("");
-            // $("#passwordInput").val("");
-            // $("#passwordVerify").val("");
+            // Clear success/error message area then append the message
+            //$("#regMessages").append(message);
+
+            //console.log(message);
+
+            // location.reload();
         });
         
     });
