@@ -105,7 +105,7 @@ module.exports = function (app, db) {
   })
 
 app.get('/project/:id/fund', function (req, res) {
-
+console.log('hello im in the get')
   let authenticated = false;
   if (typeof req.session.userID === 'number') {
     authenticated = true;
