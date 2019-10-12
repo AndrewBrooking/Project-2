@@ -6,10 +6,9 @@ const exSession = require("express-session");
 const redis = require("redis");
 const redisStore = require("connect-redis")(exSession);
 const expressLayouts = require("express-ejs-layouts");
-
 // Sequelize models
 const db = require("./models");
-
+const stripe = require("stripe")("sk_test_n6VUCo5Q7AtAwqz3UOMvtvpo00eHp0lqXf");
 // Intialize express app
 const app = express();
 
@@ -57,6 +56,7 @@ app.use(expressLayouts);
 require("./routes/apiRoutes.js")(app, db);
 require("./routes/userRoutes.js")(app, db);
 require("./routes/htmlRoutes.js")(app, db);
+require("./routes/stripeRoutes.js")(app, db, stripe);
 
 const syncOptions = {
   force: false
@@ -68,8 +68,8 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Starting the server, syncing our models
-db.sequelize.sync(syncOptions).then(function () {
-  app.listen(PORT, function () {
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

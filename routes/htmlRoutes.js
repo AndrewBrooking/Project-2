@@ -88,6 +88,54 @@ module.exports = function (app, db) {
     })
   });
 
+  // app.post('/redirectToFund', (req,res) => {
+  //   let project = req.body.proID
+  //   console.log('we in here')
+  //   console.log(project)
+  //   let source = `/project/${project}/fund`
+  //   console.log(source)
+  //   res.redirect(source)
+  // })
+  app.get('/success', (req,res) => {
+    let authenticated = false;
+    if (typeof req.session.userID === 'number') {
+      authenticated = true;
+    }
+    res.render('success', {loggedIn: authenticated})
+  })
+
+app.get('/project/:id/fund', function (req, res) {
+
+  let authenticated = false;
+  if (typeof req.session.userID === 'number') {
+    authenticated = true;
+  }
+  if(authenticated){
+  db.Project.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: db.User
+  }).then(function (result) {
+
+    db.User.findAll({}).then(user => {
+      let idhack = req.session.userID - 1
+      
+        res.render("fund", {
+          userEmail: user[idhack].email,
+          msg: result,
+          loggedIn: authenticated // == authenticated == logic for true or false
+        })
+      })
+    
+    
+  });
+}
+else{
+  res.redirect('/welcome')
+}
+});
+
   app.get('/project/:id', function (req, res) {
     let authenticated = false;
     if (typeof req.session.userID === 'number') {
@@ -100,6 +148,7 @@ module.exports = function (app, db) {
       include: db.User
     }).then(function (result) {
       res.render("project", {
+        proNumber: req.params.id,
         msg: result,
         loggedIn: authenticated // == authenticated == logic for true or false
       })
