@@ -110,6 +110,7 @@ app.get('/project/:id/fund', function (req, res) {
   if (typeof req.session.userID === 'number') {
     authenticated = true;
   }
+  if(authenticated){
   db.Project.findOne({
     where: {
       id: req.params.id
@@ -129,6 +130,10 @@ app.get('/project/:id/fund', function (req, res) {
     
     
   });
+}
+else{
+  res.redirect('/welcome')
+}
 });
 
   app.get('/project/:id', function (req, res) {

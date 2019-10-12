@@ -37,7 +37,7 @@ module.exports = function(app, db, stripe) {
          amount: amount,
          currency: "usd",
          customer: customer.id,
-         description: `Charge for customer ${userName} for $${amount} on behalf of the ${projectName} project`,
+         description: `Charge for customer ${userName} for $${amount/100} on behalf of the ${projectName} project`,
      }, function(err, charge){
          console.log('charge', charge)
      })
