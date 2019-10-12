@@ -22,21 +22,32 @@
         </div>
     </div>
 
+    <br>
+
     <form method="POST" action="/register">
         <div class="row gtr-uniform">
             <div class="row gtr-uniform">
+
                 <div class="col-12 col-12-xsmall">
-                    <input type="text" id="usernameInput" value="" placeholder="Name" name='username'>
+                    <input type="text" id="usernameInput" value="" placeholder="Username" name='username'
+                        pattern="[a-zA-Z0-9]{4,16}" maxlength="16" required>
                 </div>
+
                 <div class="col-12 col-12-xsmall">
-                    <input type="email" id="emailInput" value="" placeholder="Email" name='email'>
+                    <input type="email" id="emailInput" value="" placeholder="Email" name='email' maxlength="100"
+                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
                 </div>
+
                 <div class="col-12 col-12-xsmall">
-                    <input type="password" id="passwordInput" value="" placeholder="password" name='password'>
+                    <input type="password" id="passwordInput" value="" placeholder="password" name='password'
+                        pattern="(\w\W){4,32}" maxlength="32" required>
                 </div>
+
                 <div class="col-12  col-12-xsmall">
-                    <input type="password" id="passwordVerify" value="" placeholder="password" name='passwordVerify'>
+                    <input type="password" id="passwordVerify" value="" placeholder="password" name='passwordVerify'
+                        pattern="(\w\W){4,32}" maxlength="32" required>
                 </div>
+
             </div>
 
             <!-- Break -->

@@ -51,7 +51,7 @@ module.exports = function (app, db) {
             if (user == undefined || user == null) {
                 console.log("Could not login user: " + username);
 
-                return res.json({
+                return res.render("login", {
                     loggedIn: false,
                     error: true,
                     msg: `Username/password incorrect`
@@ -73,7 +73,7 @@ module.exports = function (app, db) {
                 } else {
                     console.log("Could not login user: " + username);
 
-                    return res.json({
+                    return res.render("login", {
                         loggedIn: false,
                         error: true,
                         msg: `Username/password incorrect`
