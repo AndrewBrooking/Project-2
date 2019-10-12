@@ -23,17 +23,34 @@ module.exports = function (app, db) {
         where: {
           id: req.session.userID
         },
+        include: db.Following
       }).then(function (userResult) {
         if (!userResult) {
           userResult = 'nothing'
         }
 
+        
+
+
+      // res.json(
+      //   {
+      //     msg: result,
+      //     authenticated: authenticated,
+      //     loggedIn: authenticated,
+      //     userResult: userResult
+      //   }
+      // )
+
+
         res.render('index', {
           msg: result,
           authenticated: authenticated,
           loggedIn: authenticated,
-          userResult: userResult
-        })
+          userResult: userResult,
+         id: req.session.userID
+       })
+
+
       })
 
     });
@@ -138,19 +155,35 @@ app.get('/project/:id/fund', function (req, res) {
     if (typeof req.session.userID === 'number') {
       authenticated = true;
     }
+    
     db.Following.findAll({
         where: {
           UserId: req.session.userID
         },
         include: db.User,
-        include: db.Project
+        include: db.Project,
+        order: [
+          ['updatedAt', 'DESC']
+        ]
       })
       // logic = select * from Users u INNER JOIN Followings f on u.id = f.UserId INNER JOIN Projects p on f.Projectid = p.id;
       .then(function (result) {
+
+        db.User.findOne({
+          where: {
+            id: req.session.userID
+          }
+        })
+        .then(function(dataUser){
+
+
+
         res.render('following', {
           msg: result,
-          loggedIn: authenticated
+          loggedIn: authenticated,
+          dataUser: dataUser
         });
+        })
       });
   });
 
@@ -174,30 +207,34 @@ app.get('/project/:id/fund', function (req, res) {
         ]
       }
     }).then((result) => {
-      res.render("index", {
-        msg: result,
-        loggedIn: authenticated //logic for true or false
-      });
+      db.User.findOne({
+        where: {
+          id: req.session.userID
+        },
+      }).then(function (userResult) {
+        if (!userResult) {
+          userResult = 'nothing'
+        }
+
+        res.render('index', {
+          msg: result,
+          authenticated: authenticated,
+          loggedIn: authenticated,
+          userResult: userResult
+        })
+      })
+      // res.render("index", {
+      //   msg: result,
+      //   loggedIn: authenticated //logic for true or false
+      // });
     })
   });
 
+
+
+  
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.send("404");
-  });
-
-  app.post('/create', (req, res) => {
-    db.Project.create({
-      name: req.body.proName,
-      desc: req.body.proDesc,
-      img: req.body.proImg,
-      UserId: 1
-    }).then(function (result) {
-      return res.status(200).json({
-        msg: "Success!"
-      });
-    }).catch(function (err) {
-      console.log(err)
-    });
   });
 };
