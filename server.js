@@ -9,7 +9,7 @@ const redisStore = require("connect-redis")(exSession);
 const expressLayouts = require("express-ejs-layouts");
 // Sequelize models
 const db = require("./models");
-
+const stripe = require("stripe")("sk_test_n6VUCo5Q7AtAwqz3UOMvtvpo00eHp0lqXf");
 // Intialize express app
 const app = express();
 
@@ -18,28 +18,30 @@ const PORT = process.env.PORT || 3000;
 const SESS_NAME = "sid";
 const SESS_SECRET = "pmp-secret-donotreveal";
 const SESS_LIFE = 1000 * 60 * 60;
-const REDIS_HOST = "localhost"; // url.parse(process.env.REDIS_URL).hostname || 
-const REDIS_PORT = 6379; // Number(url.parse(process.env.REDIS_URL).port) 
+const REDIS_HOST = "localhost"; // url.parse(process.env.REDIS_URL).hostname ||
+const REDIS_PORT = 6379; // Number(url.parse(process.env.REDIS_URL).port)
 
 // Create redis client
 const client = redis.createClient();
 
 // Middleware
-app.use(exSession({
-  name: SESS_NAME,
-  secret: SESS_SECRET,
-  store: new redisStore({
-    host: REDIS_HOST,
-    port: REDIS_PORT,
-    client: client
-  }),
-  saveUninitialized: false,
-  resave: false,
-  cookie: {
-    maxAge: SESS_LIFE,
-    sameSite: true
-  }
-}));
+app.use(
+  exSession({
+    name: SESS_NAME,
+    secret: SESS_SECRET,
+    store: new redisStore({
+      host: REDIS_HOST,
+      port: REDIS_PORT,
+      client: client
+    }),
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      maxAge: SESS_LIFE,
+      sameSite: true
+    }
+  })
+);
 
 app.use(
   express.urlencoded({
@@ -57,7 +59,7 @@ app.use(expressLayouts);
 require("./routes/apiRoutes.js")(app, db);
 require("./routes/userRoutes.js")(app, db);
 require("./routes/htmlRoutes.js")(app, db);
-require("./routes/stripeRoutes.js")(app, db);
+require("./routes/stripeRoutes.js")(app, db, stripe);
 
 const syncOptions = {
   force: false
@@ -69,8 +71,8 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Starting the server, syncing our models
-db.sequelize.sync(syncOptions).then(function () {
-  app.listen(PORT, function () {
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

@@ -1,0 +1,8 @@
+input {
+    width: 500px !important;
+}
+#payment-form{
+    background: linear-gradient( #f13838, #caa4a4)
+}
+#payment-form > * {
+margin : 15px;}

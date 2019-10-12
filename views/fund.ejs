@@ -1,32 +1,38 @@
 <section></section>
+<link rel="stylesheet" href="/stripeStuff/css/style.css">
+<script src="https://js.stripe.com/v3/"></script>
+
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1>FUND THIS PROJECT</h1>
-            <form action="/addCustomerAndCharge" method="post" id="payment-form">
-                <div class="form-row">
-                    <label for="uName">name</label>
-                    <div id="uName">
-                        <input type="text"  name="uName">
-                    </div>
-                    <label for="email">email</label>
-                    <div id="email">
-                        <input type="text"  name="email">
-                    </div>
-                  <label for="card-element">
+            <form action="/chargeUser" method="post" id="payment-form">
+              <div class="form-row">
+                  <label for="uName">name</label>
+                  <div id="uName">
+                      <input type="text"  name="uName">
+                  </div>
+                  <label for="email">email</label>
+                  <div id="email">
+                      <input type="text"  name="email" value="<%=userEmail%>">
+                  </div>
+                
+                <label for="email">Amount</label>
+                <div id="amount">
+                    <input type="number"  name="amount" value="5">
+                </div>
+                <label for="card-element">
                     Credit or debit card
                   </label>
-                  <div id="card-element">
-                    <!-- A Stripe Element will be inserted here. -->
-                  </div>
-              
-                  <!-- Used to display form errors. -->
-                  <div id="card-errors" role="alert"></div>
+                <div id="card-element">
+                  <!-- A Stripe Element will be inserted here. -->
                 </div>
-                <input type="text" name="oiDis">
-                <button>Submit Payment</button>
-              </form>
-            <button>FUND!</button>
+            
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert"></div>
+              </div>
+              <button>Submit Payment</button>
+            </form>
             
             <h1 class="display-4">Project: <h1 id="projectName"><%=msg.name%></h1></h1>
             <p class="lead"> Description: <h4><%=msg.desc%></h4></p>
@@ -41,5 +47,14 @@
         <a class="image"><img src="<%=msg.img%>" alt="" /></a>
 
     </section>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon/180x180.png">
+    <link rel="icon" href="img/apple-touch-icon/180x180.png">
+    <link rel="stylesheet" type="text/css" href="/stripeStuff/css/base.css" data-rel-css="" />
 
-</div>
+    <!-- CSS for each example: -->
+    <link rel="stylesheet" type="text/css" href="/stripeStuff/css/example2.css" data-rel-css="" />
+  
+    <script src="/stripeStuff/js/index.js"></script>
+
+  </div>

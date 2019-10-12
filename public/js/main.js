@@ -217,8 +217,5 @@
     });
   });
   //--------------------------------------//
-  $("#fund").on("click", function(event) {
-   let projectName = $('#projectName').text()
-    $.post('/chargeUser', {proName: projectName})
-  });
+  
 })(jQuery);

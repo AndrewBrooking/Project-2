@@ -4,7 +4,6 @@
             <h1 class="display-4">Project: <%=msg.name%></h1>
             <p class="lead"> Description: <%=msg.desc%></p>
 
-<<<<<<< HEAD
     <section></section>
     <div class="container">
         <div class="jumbotron jumbotron-fluid">
@@ -15,27 +14,24 @@
                 <li>Creator Email: <h5><%= msg.User.email %></h5></li>
                 <li>Creation Date: <h5><%= msg.createdAt %></h5></li>
             </div>
-=======
-            <ul>
-                <li>Creator: <%= msg.User.uName %></li>
-                <li>Creator Email: <%= msg.User.email %></li>
-                <li>Creation Date: <%= msg.createdAt %></li>
-            </ul>
->>>>>>> 7daaf04f056382a950a88bd48af195a2ae95fbfa
         </div>
 
         <br>
         <br>
-<<<<<<< HEAD
     <section>
             <a class="image"><img src="<%=msg.img%>" alt="" /></a>
 
             <button id='fund'>Fund This Project</button>
-=======
-
-        <section>
-            <a class="image"><img src="<%=msg.img%>" alt="" /></a>
->>>>>>> 7daaf04f056382a950a88bd48af195a2ae95fbfa
+            <p id='proNumber'><%=proNumber%></p>
+            <script>
+                $('#fund').on('click', function(event){
+                    console.log('oiii')
+                    let proNumber = parseInt($('#proNumber').text())
+                    document.location.href = `/project/${proNumber}/fund`;
+                })
+               
+           
+            </script>
         </section>
 
     </div>

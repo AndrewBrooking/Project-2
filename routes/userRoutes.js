@@ -4,7 +4,6 @@ const usersUtil = require("../misc/usersUtil.js");
 const saltRounds = 10;
 
 module.exports = function (app, db) {
-<<<<<<< HEAD
     app.post('/create', (req, res) => {
         db.Project.create({
             name: req.body.proName,
@@ -19,8 +18,6 @@ module.exports = function (app, db) {
             console.log(err)
         });
     })
-=======
->>>>>>> 7daaf04f056382a950a88bd48af195a2ae95fbfa
 
     app.get('/login', function (req, res) {
         let authenticated = false;
@@ -149,36 +146,6 @@ module.exports = function (app, db) {
         usernameExists(newUser.uName, function (usernameTaken) {
             // console.log("Validating username taken");
 
-<<<<<<< HEAD
-            // Validate email is not already in database
-            db.User.count({
-                where: {
-                    email: newUser.email
-                }
-            }).then(function (eCount) {
-                if (eCount !== 0) {
-                    vFailed = true;
-                    return res.json({
-                        msg: `Email already in use`
-                    });
-                }
-                console.log(vFailed, 'AAAAAAA')
-                // Create new user if no validations failed
-                if (!vFailed) {
-                    // Hash user password
-                    bcrypt.hash(newUser.pass, saltRounds, function (err, hash) {
-                        if (err) throw err;
-                        newUser.pass = hash;
-                        // Insert new user into the database
-                        db.User.create(newUser).then(function (result) {
-                            // Log db record to server console
-                            console.log(result);
-                            req.session.userID = result.id;
-                            // Return success status to client
-                            return res.redirect("/");
-                        }).catch(function (err) {
-                            console.log(err)
-=======
             if (usernameTaken) {
                 console.log("Registration Error: username taken");
 
@@ -199,7 +166,6 @@ module.exports = function (app, db) {
                             loggedIn: false,
                             error: true,
                             msg: `Email already in use.`
->>>>>>> 7daaf04f056382a950a88bd48af195a2ae95fbfa
                         });
                     } else {
                         try {
