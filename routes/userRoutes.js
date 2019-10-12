@@ -4,28 +4,26 @@ const usersUtil = require("../misc/usersUtil.js");
 const saltRounds = 10;
 
 module.exports = function (app, db) {
-
-    app.get('/login', function (req, res) {
-        let authenticated = false;
-        if (typeof req.session.userID === 'number') {
-            authenticated = true;
-        }
-        res.render('login', {
-            loggedIn: authenticated, // == authenticated == logic for true or false
-            error: false,
-            msg: ""
-        })
+    app.post('/create', (req, res) => {
+        db.Project.create({
+            name: req.body.proName,
+            desc: req.body.proDesc,
+            img: req.body.proImg,
+            UserId: req.session.userID
+        }).then(function (result) {
+            return res.redirect('/')
+        }).catch(function (err) {
+            res.json(err)
+        });
     });
-
-    app.get("/register", function (req, res) {
-        let authenticated = false;
-        if (typeof req.session.userID === 'number') {
-            authenticated = true;
-        }
-        return res.render("registration", {
-            loggedIn: authenticated,
-            error: false,
-            msg: ""
+    app.post('/following', (req, res) => {
+        db.Following.create({
+            UserId: req.session.userID,
+            ProjectId: req.body.upvote,
+        }).then(function (result) {
+            return res.redirect('/following')
+        }).catch(function(err) {
+            res.json(err)
         });
     });
 
@@ -50,12 +48,12 @@ module.exports = function (app, db) {
         }).then(function (user) {
             if (user == undefined || user == null) {
                 console.log("Could not login user: " + username);
-
-                return res.render("login", {
+                return res.render('login', {
                     loggedIn: false,
                     error: true,
                     msg: `Username/password incorrect`
-                });
+                })
+
             }
 
             // Compare passwords
@@ -124,7 +122,7 @@ module.exports = function (app, db) {
             return res.render("registration", {
                 loggedIn: false,
                 error: true,
-                msg: `Password does not meet length requirements or does not match with the password confirmation.`
+                msg: `Password does not meet 8 letter requirements or does not match with the password confirmation.`
             });
         }
 
@@ -189,21 +187,45 @@ module.exports = function (app, db) {
         });
     });
 
+    app.get("/register", function (req, res) {
+        let authenticated = false;
+        if (typeof req.session.userID === 'number') {
+            authenticated = true;
+        }
+        return res.render("registration", {
+            loggedIn: authenticated,
+            error: false,
+        });
+    });
+
+    app.get('/login', function (req, res) {
+        let authenticated = false;
+        if (typeof req.session.userID === 'number') {
+            authenticated = true;
+        }
+        res.render('login', {
+            loggedIn: authenticated,
+            error: false// == authenticated == logic for true or false
+        })
+    });
+
+
+
     function validateUsername(username) {
         return (username.length > usersUtil.nameMinLength ||
-                username.length < usersUtil.nameMaxLength) &&
+            username.length < usersUtil.nameMaxLength) &&
             !(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(username));
     }
 
     function validateEmail(email) {
         return (email.length > usersUtil.emailMinLength ||
-                email.length < usersUtil.emailMaxLength) &&
+            email.length < usersUtil.emailMaxLength) &&
             (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
     }
 
     function validatePassword(password, passwordVerify) {
         return (password.length > usersUtil.passMinLength ||
-                password.length < usersUtil.passMaxLength) &&
+            password.length < usersUtil.passMaxLength) &&
             (password === passwordVerify);
     }
 

@@ -6,6 +6,7 @@ module.exports = function(app, db) {
     });
   });
 
+
   // Delete a user by id
   app.delete("/api/users/:id", function(req, res) {
     db.User.destroy({

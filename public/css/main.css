@@ -1860,8 +1860,8 @@ input, select, textarea {
 		input[type="url"]:focus,
 		select:focus,
 		textarea:focus {
-			border-color: #f56a6a;
-			box-shadow: 0 0 0 1px #f56a6a;
+			/* border-color: #f56a6a; */
+			/* box-shadow: 0 0 0 1px #f56a6a; */
 		}
 
 	select {
@@ -1969,7 +1969,7 @@ input, select, textarea {
 
 		input[type="checkbox"]:focus + label:before,
 		input[type="radio"]:focus + label:before {
-			border-color: #f56a6a;
+			/* border-color: #f56a6a; */
 			box-shadow: 0 0 0 1px #f56a6a;
 		}
 
@@ -3599,4 +3599,11 @@ input, select, textarea {
 			border-top: 0;
 			margin-top: 0;
 			padding-top: 0;
+		}
+		.test {
+			width: 416px;
+			height: 256px
+		}
+		.projectimage {
+			width:980px
 		}
