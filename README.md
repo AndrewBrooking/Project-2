@@ -1,7 +1,7 @@
 # PayMyProject
 
 ## Concept/Motivation
-Provide a better platform for makers and content creators with more freadom than Patreon allows.
+Provide a better platform for makers and content creators with more freedom than Patreon allows.
 
 ## NPM Packages
 - bcrypt
