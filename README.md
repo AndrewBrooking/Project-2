@@ -1,5 +1,7 @@
 # PayMyProject
 
+![alt text](https://github.com/AndrewBrooking/Project-2/blob/master/public/pmp.PNG "PMP")
+
 ## Concept/Motivation
 Provide a better platform for makers and content creators with more freedom than Patreon allows.
 
